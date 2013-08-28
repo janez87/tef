@@ -1,0 +1,9 @@
+.alert.alert-info.alert-block
+  span.label.label-info HINT!
+  |  Actions within the same event can be sorted to tweak the Task behaviour.
+
+each event in events
+  .control-panel-list(
+    class="control-panel-#{event}",
+    data-event=event)
+    ol.list.sortable.list-group(data-event=event)

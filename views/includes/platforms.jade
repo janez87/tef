@@ -1,0 +1,24 @@
+mixin printPlatforms( platforms )
+  h3 Platforms
+  if platforms
+    dl
+      each platform in platforms
+        dt= platform.name
+          |  (
+          if platform.invitation
+            tt invitation
+          if platform.execution
+            tt execution
+          | )
+        dd
+          if platform.params
+            each value, key in platform.params
+              if value && value.length>0
+                code= key
+                | : 
+                tt= value
+                br
+          else
+            em No parameters
+  else
+    .alert.alert-info No platforms

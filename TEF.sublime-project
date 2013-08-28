@@ -1,0 +1,18 @@
+{
+  "folders":
+  [
+    {
+      "name": "Task Execution Framework",
+      "path": ".",
+      "folder_exclude_patterns": [
+        "node_modules"
+      ]
+    }
+  ],
+  "settings": {
+    "tab_size": 2,
+    "translate_tabs_to_spaces": true,
+    "shift_tab_unindent": true,
+    "highlight_modified_tabs": true
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "webserver": {
+    "port": 8100,
+    "hostname": "localhost"
+  },
+
+  "crowdsearcher": {
+    
+    "useCache": false,
+    
+    "url": {
+      "protocol": "http",
+      "hostname": "localhost",
+      "port": 2100,
+      "pathname": "/"
+    }
+  },
+
+  "interfaces": {
+    "path": "interfaces"
+  },
+  
+  "task_repository": {
+    "customPath": "custom",
+    "defaultPath": "defaults"
+  },
+  
+  "logger": {
+    "level": "trace"
+  }
+}

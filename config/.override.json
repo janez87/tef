@@ -1,0 +1,9 @@
+{
+  "webserver": {
+    "externalAddress": "http://localhost/tef/"
+  },
+
+  "crowdsearcher": {
+    "url": "http://localhost:2100/"
+  }
+}

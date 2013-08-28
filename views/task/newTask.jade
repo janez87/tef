@@ -1,0 +1,167 @@
+extends ../layout
+
+block append libCss
+  link(rel='stylesheet', href='components/tagmanager/bootstrap-tagmanager.css')
+
+block append css
+  != css( 'newTask' )
+
+block append libScripts
+  script(src='libs/jquery-ui.min.js')
+  script(src='components/tagmanager/bootstrap-tagmanager.js')
+  script(src='components/showdown/compressed/showdown.js')
+
+block scripts
+  != js( 'newTask' )
+
+block content
+  .row
+    .col-lg-4
+      ul.list-group.side-navigation(data-spy="affix",data-offset-top="121")
+        li.list-group-item.active(data-target='#home', data-toggle="collapse", data-parent="#accordion")
+          span.badge.badge-success.pull-right
+            i.icon-ok
+          | Task info
+        li.list-group-item(data-target='#landing', data-toggle="collapse", data-parent="#accordion")
+          | Landing page
+
+        li.list-group-item
+          h4.list-group-item-heading Platforms
+          ul.list-group
+            li.list-group-item(data-target='#platform-selection', data-toggle="collapse", data-parent="#accordion")
+              span.badge.badge-danger.pull-right
+                i.icon-remove
+              | Platform
+
+        li.list-group-item
+          span.badge.badge-danger.pull-right
+            i.icon-remove
+          h4.list-group-item-heading
+            | Data management
+          ul.list-group
+            li.list-group-item(data-target='#data_external', data-toggle="collapse", data-parent="#accordion")
+              label.radio
+                input(type='radio', name='data', value='external', checked)
+                | External file
+            //li.disabled: a(href='#') Other task simple
+            //li.disabled: a(href='#') Other task complex
+            li.list-group-item(data-target='#data_manual', data-toggle="collapse", data-parent="#accordion")
+              label.radio
+                input(type='radio', name='data', value='manual')
+                | Manual input
+
+        li.list-group-item
+          h4.list-group-item-heading Planning
+          ul.list-group
+            li.list-group-item(data-target='#planning_splitting', data-toggle="collapse", data-parent="#accordion")
+              span.badge.badge-danger.pull-right
+                i.icon-remove
+              | Splitting strategy
+            li.list-group-item(data-target='#planning_assignment', data-toggle="collapse", data-parent="#accordion") Assignment strategy
+            li.list-group-item(data-target='#planning_execution', data-toggle="collapse", data-parent="#accordion") Execution strategy
+            //li.list-group-item: a(href='#planning_invitation') Invitation strategy
+
+        li.list-group-item
+          h4.list-group-item-heading Execution
+          ul.list-group
+            li.list-group-item(data-target='#control_object', data-toggle="collapse", data-parent="#accordion") Object control strategy
+            li.list-group-item(data-target='#control_performer', data-toggle="collapse", data-parent="#accordion") Performer control strategy
+            li.list-group-item(data-target='#control_task', data-toggle="collapse", data-parent="#accordion") Task control strategy
+            li.list-group-item(data-target='#control_rules', data-toggle="collapse", data-parent="#accordion") Custom control rules
+            li.list-group-item(data-target='#control_panel', data-toggle="collapse", data-parent="#accordion") Execution control panel
+
+        .list-group-item
+          h4.list-group-item-heading Finalize
+          ul.list-group
+            li.list-group-item: a(data-toggle="modal",href='#save') Review and save
+
+    .col-lg-8#accordion
+      .accordion-group.active
+        .accordion-heading
+          a.accordion-toggle(href="#home",data-toggle="collapse",data-parent="#accordion") Task info
+        #home.accordion-body.collapse.in
+          .accordion-inner
+            include newtask-tabs/home
+
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#landing",data-toggle="collapse",data-parent="#accordion") Landing page
+        #landing.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/landing
+
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#platform-selection",data-toggle="collapse",data-parent="#accordion") Platform selection
+        #platform-selection.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/platform
+
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#data_external",data-toggle="collapse",data-parent="#accordion") External file
+        #data_external.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/data-external
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#data_manual",data-toggle="collapse",data-parent="#accordion") Manual data input
+        #data_manual.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/data-manual
+
+
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#planning_splitting",data-toggle="collapse",data-parent="#accordion") Splitting strategy
+        #planning_splitting.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/splitting-strategy
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#planning_assignment",data-toggle="collapse",data-parent="#accordion") Assignment strategy
+        #planning_assignment.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/assignment-strategy
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#planning_execution",data-toggle="collapse",data-parent="#accordion") Execution strategy
+        #planning_execution.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/execution-strategy
+      //#planning_invitation
+        include newtask-tabs/selection-invitation-strategy
+
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#control_object",data-toggle="collapse",data-parent="#accordion") Object control strategy
+        #control_object.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/object-control
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#control_performer",data-toggle="collapse",data-parent="#accordion") Performer control strategy
+        #control_performer.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/performer-control
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#control_task",data-toggle="collapse",data-parent="#accordion") Task control strategy
+        #control_task.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/task-control
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#control_rules",data-toggle="collapse",data-parent="#accordion") Custom control rule
+        #control_rules.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/control-rules
+
+      .accordion-group
+        .accordion-heading
+          a.accordion-toggle(href="#control_panel",data-toggle="collapse",data-parent="#accordion") Execution control panel
+        #control_panel.accordion-body.collapse
+          .accordion-inner
+            include newtask-tabs/control-panel
+
+    include newtask-tabs/save

@@ -1,0 +1,28 @@
+.list-controller
+  .row
+    .col-lg-6
+      .form-group
+        label(for="performer_control_name") Rule: 
+        .input-group
+          select.list-controller-name.form-control.input-small#performer_control_name
+            option(selected) None
+            each controlStrategy in performerControlStrategies
+              option(
+                data-name=controlStrategy.name,
+                data-type='rule',
+                data-params=JSON.stringify( controlStrategy.params ),
+                data-actions=JSON.stringify( controlStrategy.actions )
+                )= controlStrategy.name
+          .input-group-btn
+            button.btn.btn-default.btn-small.list-controller-add Add 
+              i.icon-plus
+      .param-container
+        h4 Parameters
+        .param-list
+    .col-lg-6
+      h3 Active rules
+      each event in events
+        .event(
+          class="event-#{event}",
+          data-event=event)
+          ul.events.list-group(data-event=event)

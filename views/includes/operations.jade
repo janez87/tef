@@ -1,0 +1,18 @@
+mixin printOperations( operations )
+  h3 Operations
+  if operations
+    dl
+      each operation in operations
+        dt #{operation.label} 
+          code= operation.name
+        dd
+          if operation.params
+            each value, key in operation.params
+              code= key
+              | : 
+              tt= value
+              br
+          else
+            em No parameters
+  else
+    .alert.alert-info No operations

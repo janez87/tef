@@ -1,0 +1,21 @@
+
+mixin printObjects( objects )
+  - var OBJECTS_LIMIT = 20;
+
+  h3 Object list (#{objects? objects.length : 0})
+  if objects && objects.length>0
+    ul
+      each object, index in objects
+        if index<OBJECTS_LIMIT
+          li
+            mixin printStatus( object.status )
+            |  
+            a(href="object/#{object._id}")  #{object.name} 
+        else if index===OBJECTS_LIMIT
+          li: em ...and #{objects.length-OBJECTS_LIMIT} more...
+        else
+          - break;
+  else
+    .alert.alert-info
+      strong Info: 
+      | No objects present...

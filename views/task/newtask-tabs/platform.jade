@@ -1,0 +1,40 @@
+.list-controller
+  .row
+    .col-lg-6
+      .form-group
+        label(for="platform_name") Platform
+        .input-group
+          select.list-controller-name.form-control.input-small(id="platform_name")
+            option(selected) None
+            each platform in platforms
+              option(
+                data-name=platform.name,
+                data-invitation="#{platform.invitation}",
+                data-execution="#{platform.execution}",
+                data-enabled="#{platform.enabled}",
+                data-type='platform',
+                data-params=JSON.stringify( platform.params )
+                )= platform.name
+          .input-group-btn
+            button.btn.btn-default.btn-small.list-controller-add Add 
+              i.icon-plus
+      .param-container
+        h4 Platform settings
+        .input-group
+          span.input-group-addon.input-small
+            input#platform_invitation(type="checkbox", data-name='invitation')
+          label(for="platform_invitation") Use for invitation?
+        .input-group
+          span.input-group-addon.input-small
+            input#platform_execution(type="checkbox", data-name='execution')
+          label(for="platform_execution") Use for execution?
+        .input-group
+          span.input-group-addon.input-small
+            input#platform_enabled(type="checkbox", data-name='enabled')
+          label(for="platform_enabled") Is enabled?
+        hr
+        h4 Platform parameters 
+        .param-list
+    .col-lg-6
+      h3 Selected platforms
+      ul#selected_platforms.list-controller-selected

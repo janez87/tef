@@ -1,0 +1,23 @@
+{
+  "name": "TEF",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node tef | bunyan -o short"
+  },
+  "dependencies": {
+    "underscore": "*",
+    "nconf": "*",
+    "express": ">= 3",
+    "request": "*",
+    "stylus": "*",
+    "coffee-script": "*",
+    "connect-assets": "*",
+    "moment": "*",
+    "jade": "*",
+    "showdown": "*",
+    "bunyan": "*",
+    "async": "*",
+    "glob": "*"
+  }
+}

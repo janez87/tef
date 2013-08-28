@@ -1,0 +1,32 @@
+extends layout
+
+block append css
+  :stylus
+    .job-list
+      list-style none
+      margin 0
+      padding 0
+      li
+        list-style none
+        margin 0
+        padding 0
+        margin-bottom 0.2em
+        border-bottom 1px solid #eee
+        .delete i
+          color black
+
+
+block content
+  h2 Job list
+  if jobs && jobs.length>0
+    ul.job-list
+      each job in jobs
+        li
+          button.btn.btn-danger.btn-small.delete(rel="job",href=job._id) Delete 
+            i.icon-trash
+          | 
+          a(href="job/#{job._id}")= job.name
+  else
+    .alert.alert-info
+      strong Info: 
+      | No jobs present

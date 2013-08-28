@@ -1,0 +1,32 @@
+.list-controller
+  .row
+    .col-lg-6
+      .form-group
+        label(for='custom_rule_event') Event
+        select.form-control.input-small#custom_rule_event
+          each event in events
+            option= event
+      .form-group
+        label(for='custom_rule_action') Action
+        .input-group
+          select.list-controller-name.form-control.input-small#custom_rule_action
+            option(selected) None
+            each eventScript in eventScripts
+              option(
+                data-type='customrule',
+                data-params=JSON.stringify( eventScript.params ),
+                data-name=eventScript.name
+                )= eventScript.name
+          .input-group-btn
+            button.btn.btn-default.btn-small.list-controller-add Add 
+              i.icon-plus
+      .param-container
+        h4 Parameters
+        .param-list
+    .col-lg-6
+      h3 Active rules
+      each event in events
+        .event(
+          class="event-#{event}",
+          data-event=event)
+          ul.events.list-group(data-event=event)

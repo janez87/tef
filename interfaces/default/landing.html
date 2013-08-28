@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Task landing page</title>
+    
+    <!-- Load external css -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="row">
+        <div class="span3">
+          <img src="//beeproject.dei.polimi.it/images/LogoPoli.jpg" title="Politecnico di Milano" class="img-polaroid pull-left">
+        </div>
+        <div class="span6 text-center">
+          <h1>Task landing page</h1>
+        </div>
+        <div class="span3">
+          <img src="//beeproject.dei.polimi.it/images/LogoPoli.jpg" title="Politecnico di Milano" class="img-polaroid pull-right">
+        </div>
+      </div>
+      <hr>
+      
+      <!-- Run it! -->
+      <div class="well text-center">
+        <a id="run" class="btn btn-primary">
+          Run Task
+          <i class="icon-play"></i>
+        </a>
+      </div>
+      
+      <!-- Task description -->
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+      <img src="http://lorempixel.com/700/500" alt="Task image">
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    
+    <!-- DOM is ready -->
+    <script type="text/javascript">
+      var a = document.getElementById( 'run' );
+      a.addEventListener( 'click', function( e ) {
+        var url = location.protocol+'//'+location.host+location.pathname+'/index.html'+location.search
+        location.replace( url );
+        
+        e.preventDefault();
+        return false;
+      } );
+    </script>
+  </body>
+</html>

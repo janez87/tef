@@ -1,0 +1,70 @@
+### Windows
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+
+
+### LINUX
+!.gitignore
+*~
+
+
+
+### OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+
+
+### Node
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+.tern-port
+
+pids
+logs
+results
+node_modules
+
+npm-debug.log
+
+### SublimeText project files
+*.sublime-workspace
+
+### Skip data
+data/*
+public/compiledAssets
+intefaces/*
+!intefaces/default/
+!intefaces/task.js
+
+# Uploads
+uploads
+images
+out
+
+# Ignore override config file
+config/override.json

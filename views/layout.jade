@@ -1,0 +1,49 @@
+!!! 5
+html(lang="en")
+  head
+    title= title
+    base(href=baseUrl)
+    meta(name="viewport",content="width=device-width, initial-scale=1.0")
+
+    block libCss
+      link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,400italic")
+      link(rel="stylesheet", href="stylesheets/bootstrap.min.css")
+      link(rel="stylesheet", href="stylesheets/font-awesome.min.css")
+
+    block css
+      != css( 'style' )
+
+    block libScripts
+      script(src='libs/jquery.min.js')
+      script(src='libs/bootstrap.min.js')
+
+    block scripts
+      != js( 'script' )
+
+  body
+    //.navbar.navbar-fixed-top.navbar-inverse
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href=baseUrl)= title
+          .nav-collapse.collapse
+            ul.nav
+              li
+                a(href='task/new')
+                  i.icon-plus.icon-white
+                  |  New task
+
+    .container
+      section
+        .row: .col-lg-12
+          block header
+            .page-header
+              h1= title
+        .row: .col-lg-12
+          block content
+      footer.row
+        .col-lg-12.text-right
+          span.label.label-info Powered by Hodor

@@ -1,0 +1,41 @@
+extends layout
+
+include includes/metadata
+include includes/status
+
+
+block header
+  .page-header
+    if !object
+      h1 Error
+    else
+      span.pull-right
+        tt  Status 
+        mixin printStatus( object.status )
+        br
+        tt: em= object._id
+      h1 Object details 
+        small created 
+          em= moment( object.creationDate ).calendar()
+
+
+block content
+  if !object
+    .alert.alert-error
+      h4 Error!
+      | Invalid Object ID!
+  else
+    a.btn.btn-small.btn-info(href="job/#{object.job}")
+      i.icon-chevron-left
+      |  Job
+    hr
+
+    .row
+      .col-lg-6
+        h3 Data
+        dl
+          each value,key in object.data
+            dt= key
+            dd= value
+      .col-lg-6
+        mixin printMetadata( object.metadata )

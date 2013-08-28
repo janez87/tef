@@ -1,0 +1,223 @@
+@import vendor
+
+.badge-success
+  color #468847
+  background-color #dff0d8
+.badge-danger
+  color #b94a48
+  background-color #f2dede
+
+label.required
+  &:after
+    color #ff534f
+    content '*'
+
+
+.input-group
+  $border = 1px solid #ccc
+  margin-bottom 5px
+
+  span.input-group-addon.input-small > input[type="checkbox"]
+    position relative
+    top 2px
+  span.input-group-addon.input-small+label
+    border $border
+    border-top-right-radius 3px
+    border-bottom-right-radius 3px
+    height 30px
+    padding 5px 10px
+    font-size 12px
+    line-height 1.428571429
+    display table-cell
+    width 100%
+    margin-bottom 0
+
+.accordion-group
+  .accordion-heading
+    font-weight bold
+  &.active
+    .accordion-heading
+      & a
+        color #fff
+      background-color #428bca
+      border-color #428bca
+    border-color #428bca
+
+.side-navigation
+  .list-group-item.active
+    color #fff
+    background-color #428bca
+
+.side-navigation
+  user-select none
+  .list-group-item
+    cursor pointer
+    color #428bca
+    h4
+      cursor default
+      color #333
+    a
+      padding 0
+      &:hover
+        background-color inherit
+        text-decoration underline
+    .list-group
+      margin 0 -30px 0 -15px
+      &>.list-group-item
+        margin 0
+        border none
+        border-radius 0
+        padding 5px 30px 5px 30px
+        label.radio
+          margin 0
+          font-weight normal
+          cursor pointer
+
+.affix
+  top 10px
+  width 293px
+
+.icon-trash
+  color black
+
+.list-controller-selected
+  padding 0
+  .list-group-item
+    cursor pointer
+    user-select none
+
+.empty-placeholder
+  height 38px
+  color #468847
+  text-align center
+.empty-placeholder::before
+  content "Will drop here"
+
+#landing_preview, #question_preview
+  border 1px solid #ddd
+  padding 0.3em
+
+#question_preview
+  max-height: 200px;
+  overflow: scroll;
+
+
+.events, .list
+  .list-group-item
+    cursor pointer
+    user-select none
+  &::before
+    font-weight bold
+    content attr(data-event)
+  &:empty::before
+    content ""
+.list
+  .list-group-item
+    cursor row-resize
+
+
+.cell
+  text-align center
+  overflow hidden
+  text-overflow ellipsis
+  &.remove
+    cursor pointer
+
+
+#dataPreviewArea
+  display none
+
+
+
+.data-param-list
+  padding 5px 0px
+  list-style none
+  li
+    color black
+    *
+      display inline-block
+      overflow hidden
+      text-overflow ellipsis
+    code
+      width 30%
+    tt
+      margin-left 7px
+      width 65%
+      width calc(70% - 10px)
+
+
+
+/*
+.event
+  display none
+  .events
+    li
+      line-height 25px
+      cursor pointer
+
+      .name
+        width 65%
+        display inline-block
+        overflow hidden
+        text-overflow ellipsis
+
+      ul
+        list-style none
+        margin 0
+        li
+          margin 0
+          padding 0
+          border none
+*/
+
+.control-panel-list
+  .list
+    cursor pointer
+    li
+      line-height 25px
+
+.performer-list
+  tbody
+    tr
+      cursor pointer
+
+      &.selected
+        background-color #B7D7F0
+        &:hover
+          background-color #B7D7F0
+
+#data
+  table-layout fixed
+  #data-input
+    td
+      input
+        width 100%
+        height auto
+        box-sizing border-box
+
+
+/*
+.sortable
+  margin 0
+  counter-reset lista
+  li
+    margin-bottom 3px
+    border 1px solid #eee
+    border-radius 3px
+    padding 9px
+    list-style none
+    cursor move
+
+    &:last-child
+      margin-bottom 0
+
+    
+    &:not(.empty-placeholder)
+      counter-increment lista
+
+    &:not(.empty-placeholder)::before
+      content counter(lista) ") "
+
+    i
+      float right
+*/

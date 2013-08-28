@@ -1,0 +1,10 @@
+!!! 5
+html
+  head
+    base(href=baseUrl)
+    title Test Run
+    script(src='task.js')
+  body
+    h1 Running execution
+    code (#{execution.id})
+    pre= JSON.stringify( execution, null, 2 )

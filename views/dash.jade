@@ -1,0 +1,95 @@
+extends layout
+
+block append css
+  link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.0.2/css/font-awesome.min.css")
+  :stylus
+    .img-polaroid
+      height 100px
+    .table
+      table-layout fixed
+      .id
+        overflow hidden
+        text-overflow ellipsis
+        width 50px
+
+block header
+  .row-fluid
+    .span3
+      img.img-polaroid.pull-left(src="https://si0.twimg.com/profile_images/2143240836/logo-www2013.png", title="www 2013")
+    .span6.text-center
+      h1= task.name
+    .span3
+      img.img-polaroid.pull-right(src="http://upload.wikimedia.org/wikipedia/it/b/be/Logo_Politecnico_Milano.png", title="Politecnico di Milano")
+  hr
+
+block content
+  .row-fluid
+    .span6
+      h2 Microtasks
+      table.table.table-condensed.table-bordered.table-striped.table-hover
+        thead: tr
+          th.id ID
+          th Status
+          th Platforms
+          th Metadata
+        tbody
+          each microtask, index in task.microtasks
+            tr
+              td.id(title=microtask._id)= microtask._id
+              td
+                if microtask.status===10
+                  span.label.label-success OPENED
+                else
+                  span.label.label-important CLOSED
+              td= microtask.platforms.join( ', ' ).toUpperCase()
+              - var hit = _.findWhere( microtask.metadata, { name: 'hittype' } )
+              - hit = hit? hit.value : ''
+              td
+                if hit!==''
+                  a(href="https://workersandbox.mturk.com/mturk/preview?groupId=#{hit}") MTurk HIT
+    .span6
+      h2 Objects
+      table.table.table-condensed.table-bordered.table-striped.table-hover
+        thead: tr
+          th.id ID
+          th Value
+          th Responses
+          th Status
+          th # Answer
+        tbody
+          each object, index in task.objects
+            - var resp = answers[ object._id ];
+            - resp = _.map( resp, function( r ) { return r.response } );
+            - var count = _.countBy( resp, function( r ) { return r; } );
+            tr
+              td.id(title=object._id)= object._id
+              td= object.data.playa
+              td
+                tt= resp
+              td
+                if object.status===10
+                  span.label.label-success OPENED
+                else
+                  span.label.label-important CLOSED
+              td
+                each num,response in count
+                  code #{response}:
+                  tt: b  #{num}
+                  br
+  hr
+  h2 Task
+  p Status: 
+    if task.status==10
+      span.label.label-success OPENED
+    else if task.status==50
+      span.label.label-important CLOSED
+    else
+      span.label.label-info
+        if task.status==0
+          | CREATED
+        else if task.status==20
+          | FINALIZED
+        else if task.status==30
+          | WAIT
+        else if task.status==40
+          | SUSPENDED

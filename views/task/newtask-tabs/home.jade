@@ -1,0 +1,48 @@
+.row
+  .col-lg-6
+    .form-group
+      label.required(for='title') Title
+      input#title.form-control.input-small(type='text', placeholder='Task title', required)
+    .form-group
+      label(for='alias') Alias
+      input#alias.form-control.input-small(type='text', placeholder='Insert Alias', pattern='^[a-z\-0-9]+$')
+    .form-group
+      label(for='job') Job ID
+      input#job.form-control.input-small(type='text', placeholder='Insert Job ID')
+    .input-group
+      span.input-group-addon.input-small
+        input#private(type='checkbox')
+      label(for="private") Private?
+  .col-lg-6
+    .form-group
+      label(for='question') Description
+      textarea#question.form-control(rows=3)
+      p.text-muted See preview here
+      #question_preview
+.list-controller
+  .row
+    .col-lg-6
+      h3 Available task types
+      .form-group
+        label(for="task_operation_name") Task type:
+        .input-group
+          select#task_type_name.list-controller-name.form-control.input-small
+            option(selected) None
+            each taskType in taskTypes
+              option(
+                data-name=taskType.name,
+                data-type='type',
+                data-params=JSON.stringify( taskType.params )
+                )= taskType.name
+          span.input-group-btn
+            button.btn.btn-small.btn-default.list-controller-add Add 
+              i.icon-plus
+      .form-group
+        label(for="task_operation_label") Label:
+        input#task_operation_label.form-control.input-small(type="text", placeholder="Insert operation label", required)
+      .param-container
+        h4 Parameters
+        .param-list
+    .col-lg-6
+      h3 Active task types
+      ol#task_operations.list-controller-selected.list-group.sortable
