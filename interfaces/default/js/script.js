@@ -1,8 +1,9 @@
+/* global CSM */
 ( function() {
   var csm = new CSM();
 
   // IDs
-  var jobId, taskId, microtaskId, executionId, objectIds;
+  var jobId, taskId, microtaskId, executionId;
   var taskObj;
 
 
@@ -15,7 +16,7 @@
     var $btn = $( '<button class="btn btn-link"><i class="icon-check-empty"></i> Liked?</button>' );
     
     $btn.on( 'click', function() {
-      $i = $btn.find( 'i:first' );
+      var $i = $btn.find( 'i:first' );
       var liked = !$i.hasClass( 'icon-check' );
 
       $i.removeClass( 'icon-check-empty icon-check' );
@@ -32,7 +33,7 @@
     $div.append( $btn );
 
     return $div;
-  };
+  }
   function getLikeData( $objects, operation ) {
     var $rows = $( '.action[data-operation="'+operation._id+'"][data-liked="true"]', $objects );
 
@@ -41,11 +42,11 @@
 
       return {
         objectId: id
-      }
+      };
     } ).get();
 
     return data;
-  };
+  }
 
   function createClassifyAction( operation ) {
     var $div = $( '<div></div>' );
@@ -53,15 +54,15 @@
     $div.attr( 'data-operation', operation._id );
 
     var categories = operation.params.categories;
-    var select = '<select class="span12">'
+    var select = '<select class="form-control">';
     $.each( categories, function( i, val ) {
-      select += '<option data-category="'+val+'">'+val+'</option>'
+      select += '<option data-category="'+val+'">'+val+'</option>';
     } );
     select += '</select>';
 
     $div.append( select );
     return $div;
-  };
+  }
   function getClassifyData( $objects, operation ) {
     var $rows = $( '.action[data-operation="'+operation._id+'"] select', $objects );
 
@@ -72,11 +73,11 @@
       return {
         objectId: id,
         value: category
-      }
+      };
     } ).get();
 
     return data;
-  };
+  }
 
   function createFuzzyClassifyAction( operation ) {
     var $div = $( '<div></div>' );
@@ -84,40 +85,40 @@
     $div.attr( 'data-operation', operation._id );
 
     var categories = operation.params.categories;
-    var select = '<select class="span12">'
+    var select = '<select class="form-control">';
     $.each( categories, function( i, val ) {
-      select += '<option data-category="'+val+'">'+val+'</option>'
+      select += '<option data-category="'+val+'">'+val+'</option>';
     } );
     select += '</select>';
 
     $div.append( select );
     return $div;
-};
+  }
 
-function getFuzzyClassifyData( $objects, operation ) {
-  var $rows = $( '.action[data-operation="'+operation._id+'"] select', $objects );
+  function getFuzzyClassifyData( $objects, operation ) {
+    var $rows = $( '.action[data-operation="'+operation._id+'"] select', $objects );
 
-  var data = $rows.map( function() {
-    var category = $( this ).find( 'option:selected').data( 'category' );
-    var id = $( this ).closest( 'tr' ).data( 'id' );
+    var data = $rows.map( function() {
+      var category = $( this ).find( 'option:selected').data( 'category' );
+      var id = $( this ).closest( 'tr' ).data( 'id' );
 
-    return {
-      objectId: id,
-      value: category
-    }
-  } ).get();
+      return {
+        objectId: id,
+        value: category
+      };
+    } ).get();
 
-  return data;
-};
+    return data;
+  }
 
   function createTagAction( operation ) {
     var $div = $( '<div></div>' );
     $div.addClass( 'action '+operation.name );
     $div.attr( 'data-operation', operation._id );
 
-    $div.append('<input type="text" class="span12">' );
+    $div.append('<input type="text" class="form-control">' );
     return $div;
-  };
+  }
   function getTagData( $objects, operation ) {
     var $rows = $( '.action[data-operation="'+operation._id+'"] input', $objects );
 
@@ -131,11 +132,11 @@ function getFuzzyClassifyData( $objects, operation ) {
         return {
           objectId: id,
           value: tags.split( ',' )
-        }
+        };
     } ).get();
 
     return data;
-  };
+  }
 
   var actions = {
     like: {
@@ -182,7 +183,7 @@ function getFuzzyClassifyData( $objects, operation ) {
 
     $.each( objects, function() {
       var obj = this;
-      var data = obj.data;
+      //var data = obj.data;
       var $tr = $( '<tr></tr>' );
       $tr.attr( 'data-id', obj._id );
 
@@ -195,7 +196,7 @@ function getFuzzyClassifyData( $objects, operation ) {
       $.each( obj.data, function( key, value ) {
         $dl.append( '<dt title="'+key+'">'+key+'</dt>' );
         $dl.append( '<dd>'+value+'</dd>' );
-      } )
+      } );
       $tr.append( $td );
 
 

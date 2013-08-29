@@ -1,15 +1,16 @@
 extends ../layout
 
 block append libCss
-  link(rel='stylesheet', href='components/tagmanager/bootstrap-tagmanager.css')
+  //link(rel='stylesheet', href='components/tagmanager/bootstrap-tagmanager.css')
 
 block append css
   != css( 'newTask' )
 
 block append libScripts
   script(src='libs/jquery-ui.min.js')
-  script(src='components/tagmanager/bootstrap-tagmanager.js')
-  script(src='components/showdown/compressed/showdown.js')
+  script(src='libs/epiceditor.min.js')
+  //script(src='components/tagmanager/bootstrap-tagmanager.js')
+  //script(src='components/showdown/compressed/showdown.js')
 
 block scripts
   != js( 'newTask' )
@@ -75,93 +76,94 @@ block content
           ul.list-group
             li.list-group-item: a(data-toggle="modal",href='#save') Review and save
 
-    .col-lg-8#accordion
-      .accordion-group.active
-        .accordion-heading
-          a.accordion-toggle(href="#home",data-toggle="collapse",data-parent="#accordion") Task info
-        #home.accordion-body.collapse.in
-          .accordion-inner
-            include newtask-tabs/home
+    .col-lg-8
+      .panel-group#accordion
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#home",data-toggle="collapse",data-parent="#accordion") Task info
+          #home.panel-collapse.collapse.in
+            .panel-body
+              include newtask-tabs/home
 
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#landing",data-toggle="collapse",data-parent="#accordion") Landing page
-        #landing.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/landing
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#landing",data-toggle="collapse",data-parent="#accordion") Landing page
+          #landing.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/landing
 
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#platform-selection",data-toggle="collapse",data-parent="#accordion") Platform selection
-        #platform-selection.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/platform
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#platform-selection",data-toggle="collapse",data-parent="#accordion") Platform selection
+          #platform-selection.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/platform
 
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#data_external",data-toggle="collapse",data-parent="#accordion") External file
-        #data_external.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/data-external
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#data_manual",data-toggle="collapse",data-parent="#accordion") Manual data input
-        #data_manual.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/data-manual
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#data_external",data-toggle="collapse",data-parent="#accordion") External file
+          #data_external.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/data-external
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#data_manual",data-toggle="collapse",data-parent="#accordion") Manual data input
+          #data_manual.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/data-manual
 
 
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#planning_splitting",data-toggle="collapse",data-parent="#accordion") Splitting strategy
-        #planning_splitting.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/splitting-strategy
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#planning_assignment",data-toggle="collapse",data-parent="#accordion") Assignment strategy
-        #planning_assignment.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/assignment-strategy
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#planning_execution",data-toggle="collapse",data-parent="#accordion") Execution strategy
-        #planning_execution.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/execution-strategy
-      //#planning_invitation
-        include newtask-tabs/selection-invitation-strategy
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#planning_splitting",data-toggle="collapse",data-parent="#accordion") Splitting strategy
+          #planning_splitting.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/splitting-strategy
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#planning_assignment",data-toggle="collapse",data-parent="#accordion") Assignment strategy
+          #planning_assignment.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/assignment-strategy
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#planning_execution",data-toggle="collapse",data-parent="#accordion") Execution strategy
+          #planning_execution.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/execution-strategy
+        //#planning_invitation
+          include newtask-tabs/selection-invitation-strategy
 
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#control_object",data-toggle="collapse",data-parent="#accordion") Object control strategy
-        #control_object.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/object-control
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#control_performer",data-toggle="collapse",data-parent="#accordion") Performer control strategy
-        #control_performer.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/performer-control
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#control_task",data-toggle="collapse",data-parent="#accordion") Task control strategy
-        #control_task.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/task-control
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#control_rules",data-toggle="collapse",data-parent="#accordion") Custom control rule
-        #control_rules.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/control-rules
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#control_object",data-toggle="collapse",data-parent="#accordion") Object control strategy
+          #control_object.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/object-control
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#control_performer",data-toggle="collapse",data-parent="#accordion") Performer control strategy
+          #control_performer.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/performer-control
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#control_task",data-toggle="collapse",data-parent="#accordion") Task control strategy
+          #control_task.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/task-control
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#control_rules",data-toggle="collapse",data-parent="#accordion") Custom control rule
+          #control_rules.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/control-rules
 
-      .accordion-group
-        .accordion-heading
-          a.accordion-toggle(href="#control_panel",data-toggle="collapse",data-parent="#accordion") Execution control panel
-        #control_panel.accordion-body.collapse
-          .accordion-inner
-            include newtask-tabs/control-panel
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#control_panel",data-toggle="collapse",data-parent="#accordion") Execution control panel
+          #control_panel.panel-collapse.collapse
+            .panel-body
+              include newtask-tabs/control-panel
 
     include newtask-tabs/save

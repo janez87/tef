@@ -19,9 +19,9 @@ block header
         mixin printStatus( job.status )
         br
         tt: em= job._id
-      h1= job.name
+      h1 #{job.name} 
         if job.alias
-          small: a(href="#{csUrl}api/run?alias=#{job.alias}", title="Run by alias")= job.alias
+          small: a(href="#{csUrl}api/landing?alias=#{job.alias}", title="Run by alias")= job.alias
 
 
 block content
@@ -38,7 +38,7 @@ block content
         if !process.env.PRODUCTION
           button.btn.btn-small.btn-danger.delete(rel="job",href=job._id) Delete 
             i.icon-trash
-          a.btn.btn-small.btn-primary(href="#{csUrl}api/landing?job=#{job._id}&show=true") Run job! 
+          a.btn.btn-small.btn-primary(href="#{csUrl}api/landing?job=#{job._id}") Run job! 
             i.icon-play.icon-white
     hr
 

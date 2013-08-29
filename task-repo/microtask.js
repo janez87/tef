@@ -8,7 +8,7 @@ module.exports = exports = function( req, res ) {
   CS.getMicrotask( {
     id: id,
     populate: [ 'objects', 'operations', 'platforms' ],
-    select: [ 'metadata' ],
+    //select: [ 'metadata' ],
     settings: req.query
   }, function microtaskRetrieved( err, microtask ) {
 

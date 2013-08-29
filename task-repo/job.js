@@ -7,7 +7,7 @@ module.exports = exports = function( req, res, next ) {
   CS.getJob( {
     id: id,
     populate: [ 'objects', 'tasks' ],
-    select: [ 'tasks', 'objects', 'taskAssignmentStrategy', 'metadata' ],
+    //select: [ 'tasks', 'objects', 'metadata' ],
     settings: req.query
   }, function jobRetrieved( err, job ) {
     if( err ) return next( err );

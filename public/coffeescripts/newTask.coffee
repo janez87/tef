@@ -210,7 +210,7 @@ getJsonTaskData = ()->
   task.description = $( '#question' ).val()
   task.description = undefined if task.description.length==0
 
-  task.landing = $( '#landing_mark' ).val()
+  task.landing = $( '#landing_md' ).val()
   task.landing = undefined if task.landing.length==0
 
   task.private = $( '#private' ).prop 'checked'
@@ -678,7 +678,7 @@ addToList = ( data )->
 
 
 $ ->
-  converter = new Showdown.converter()
+  baseUrl = $( 'base' ).attr 'href'
   ###
   $body = $ document.body
   navHeight = $('.page-header:first').outerHeight true
@@ -739,9 +739,24 @@ $ ->
 
   # Task question management
   $question = $ '#question'
+  ###
+  editor = new EpicEditor(
+    container: $question[0]
+    basePath: baseUrl
+    theme: {
+      base: 'themes/base/epiceditor.css',
+      preview: 'themes/preview/github.css',
+      editor: 'themes/editor/epic-light.css'
+    }
+    button: {
+      preview: true,
+      fullscreen: false,
+      bar: "auto"
+    } ).load();
   $questionPreview = $ '#question_preview'
   $question.on 'change keyup', ->
     $questionPreview.html converter.makeHtml $question.val()
+  ###
 
   # Alias
   $title = $ '#title'
@@ -752,10 +767,27 @@ $ ->
 
 
   # Landing page preview
-  $landing = $ '#landing_mark'
+  $landing = $ '#landing_md'
+  ###
+  editor = new EpicEditor(
+    container: $landing[0]
+    basePath: baseUrl
+    theme: {
+      base: 'themes/base/epiceditor.css',
+      preview: 'themes/preview/preview-dark.css',
+      editor: 'themes/editor/epic-light.css'
+    }
+    button: {
+      preview: true,
+      fullscreen: true,
+      bar: "auto"
+    }
+    autogrow: true
+   ).load();
   $landingPreview = $ '#landing_preview'
   $landing.on 'change keyup', ->
     $landingPreview.html converter.makeHtml $landing.val()
+  ###
 
   # List controller
   $listControllers = $ '.list-controller'

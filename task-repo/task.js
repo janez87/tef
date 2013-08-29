@@ -7,6 +7,7 @@ module.exports = exports = function( req, res, next ) {
   CS.getTask( {
     id: id,
     populate: [ 'operations', 'platforms', 'microtasks', 'objects' ],
+    /*
     select: [
       'operations',
       'platforms',
@@ -18,6 +19,7 @@ module.exports = exports = function( req, res, next ) {
       'microTaskAssignmentStrategy',
       'controlrules',
     ],
+    */
     settings: req.query
   }, function taskRetrieved( err, task ) {
     if( err ) return next( err  );
