@@ -20,14 +20,14 @@ block content
         -   return date? moment( date ).format( "dddd, MMMM Do YYYY, h:mm:ss a" ): date;
         - }
         
-        .panel
+        .panel.panel-default
           .panel-heading
             .row
-              .col-lg-6
+              .col-md-6
                 h3.panel-title Execution 
                   mixin printStatus( execution.status )
                   small  #{execution._id}
-              .col-lg-6.text-right
+              .col-md-6.text-right
                 .btn-group
                   a.btn.btn-default.btn-small(href="job/#{execution.job}")
                     i.icon-chevron-left
@@ -38,41 +38,41 @@ block content
                   a.btn.btn-default.btn-small(href="microtask/#{execution.microtask}")
                     i.icon-chevron-left
                     |  Microtask
-            
-          .row
-            .col-lg-6
-              if execution.performer
+          .panel-body
+            .row
+              .col-md-6
+                if execution.performer
+                  p
+                    tt: strong Performer: 
+                    code= execution.performer.username
                 p
-                  tt: strong Performer: 
-                  code= execution.performer.username
-              p
-                tt: strong Platform: 
-                code= execution.platform.name
-            .col-lg-6
-              p
-                tt: strong Opened: 
-                code= format( execution.creationDate )
-              p
-                tt: strong Closed: 
-                code= format( execution.closedDate )
-          h4 Annotations
-          if execution.annotations.length>0
-            ul
-              each annotation in execution.annotations
-                li
-                  span.label.label-info= annotation.operation.name
-                  em= annotation.operation.label
-                  if annotation.response
-                    code= annotation.response
-                  |  [
-                  em= moment( annotation.creationDate ).from( execution.creationDate, true )
-                  |  after the execution creation]
-                  |  for object 
-                  a(href="object/#{annotation.object}")= annotation.object
-          else
-            .alert.alert-info
-              h4 Info:
-              p No annotation found
+                  tt: strong Platform: 
+                  code= execution.platform.name
+              .col-md-6
+                p
+                  tt: strong Opened: 
+                  code= format( execution.creationDate )
+                p
+                  tt: strong Closed: 
+                  code= format( execution.closedDate )
+            h4 Annotations
+            if execution.annotations.length>0
+              ul
+                each annotation in execution.annotations
+                  li
+                    span.label.label-info= annotation.operation.name
+                    em= annotation.operation.label
+                    if annotation.response
+                      code= annotation.response
+                    |  [
+                    em= moment( annotation.creationDate ).from( execution.creationDate, true )
+                    |  after the execution creation]
+                    |  for object 
+                    a(href="object/#{annotation.object}")= annotation.object
+            else
+              .alert.alert-info
+                h4 Info:
+                p No annotation found
     else
       .alert.alert-info
         h4 Sorry :-(

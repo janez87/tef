@@ -28,23 +28,23 @@ block content
       | Invalid Microtask ID!
   else
     .row
-      .col-lg-6: .btn-group
+      .col-md-6: .btn-group
         a.btn.btn-info.btn-small(href="task/#{microtask.task}")
           i.icon-chevron-left
           |  Task
         a.btn.btn-small.btn-primary Microtask
-      .col-lg-6.text-right: .btn-group
+      .col-md-6.text-right: .btn-group
         a.btn.btn-small.btn-success(href="answer?microtask=#{microtask._id}") Answers
         a.btn.btn-small.btn-primary(href="#{csUrl}api/run?microtask=#{microtask._id}") Run microtask! 
           i.icon-play.icon-white
     hr
 
     .row
-      .col-lg-4
+      .col-md-4
         mixin printOperations( microtask.operations )
-      .col-lg-4
+      .col-md-4
         mixin printPlatforms( microtask.platforms )
-      .col-lg-4
+      .col-md-4
         mixin printMetadata( microtask.metadata )
     hr
     mixin printObjects( microtask.objects )

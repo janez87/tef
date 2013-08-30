@@ -1,5 +1,5 @@
 .row
-  .col-lg-6
+  .col-md-6
     .form-group
       label.required(for='title') Title
       input#title.form-control.input-small(type='text', placeholder='Task title', required)
@@ -13,13 +13,13 @@
       span.input-group-addon.input-small
         input#private(type='checkbox')
       label(for="private") Private?
-  .col-lg-6
+  .col-md-6
     .form-group
       label(for='question') Description
       textarea#question.form-control(rows=3)
 .list-controller
   .row
-    .col-lg-6
+    .col-md-6
       h3 Available task types
       .form-group
         label(for="task_operation_name") Task type:
@@ -41,6 +41,6 @@
       .param-container
         h4 Parameters
         .param-list
-    .col-lg-6
+    .col-md-6
       h3 Active task types
       ol#task_operations.list-controller-selected.list-group.sortable

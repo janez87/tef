@@ -1,7 +1,7 @@
 extends ../layout
 
 block append libCss
-  //link(rel='stylesheet', href='components/tagmanager/bootstrap-tagmanager.css')
+  link(rel='stylesheet', href='stylesheets/tagmanager.css')
 
 block append css
   != css( 'newTask' )
@@ -9,7 +9,7 @@ block append css
 block append libScripts
   script(src='libs/jquery-ui.min.js')
   script(src='libs/epiceditor.min.js')
-  //script(src='components/tagmanager/bootstrap-tagmanager.js')
+  script(src='libs/tagmanager.js')
   //script(src='components/showdown/compressed/showdown.js')
 
 block scripts
@@ -17,7 +17,7 @@ block scripts
 
 block content
   .row
-    .col-lg-4
+    .col-md-4
       ul.list-group.side-navigation(data-spy="affix",data-offset-top="121")
         li.list-group-item.active(data-target='#home', data-toggle="collapse", data-parent="#accordion")
           span.badge.badge-success.pull-right
@@ -76,7 +76,7 @@ block content
           ul.list-group
             li.list-group-item: a(data-toggle="modal",href='#save') Review and save
 
-    .col-lg-8
+    .col-md-8
       .panel-group#accordion
         .panel.panel-default
           .panel-heading

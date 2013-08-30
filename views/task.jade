@@ -39,13 +39,13 @@ block content
       | Invalid Task ID!
   else
     .row
-      .col-lg-3: .btn-group
+      .col-md-3: .btn-group
         a.btn.btn-info.btn-small(href="job/#{task.job}")
           i.icon-chevron-left
           |  Job
         a.btn.btn-small.btn-primary Task
 
-      .col-lg-9.text-right: .btn-group
+      .col-md-9.text-right: .btn-group
         if task.status<10
           a.btn.btn-small.btn-info(href="task/#{task._id}/open") Open Task!
         else
@@ -64,14 +64,14 @@ block content
         #description.collapse.in!= md(task.description)
 
     .row
-      .col-lg-4
+      .col-md-4
         mixin printOperations( task.operations )
-      .col-lg-4
+      .col-md-4
         mixin printPlatforms( task.platforms )
-      .col-lg-4
+      .col-md-4
         mixin printMetadata( task.metadata )
     .row
-      .col-lg-6
+      .col-md-6
         h3 Strategies
         dl
           dt Splitting strategy:
@@ -89,7 +89,7 @@ block content
           dt Microtask assignment strategy:
           dd= task.microTaskAssignmentStrategy.name
 
-      .col-lg-6
+      .col-md-6
         if task.controlrules && task.controlrules.length>0
           - groupedControlRules = _.groupBy( task.controlrules, 'event' );
           h3 Active control rules
@@ -109,7 +109,7 @@ block content
 
 
     .row
-      .col-lg-6
+      .col-md-6
         h3 Microtask list (#{task.microtasks? task.microtasks.length : 0})
         if task.microtasks && task.microtasks.length>0
           ul
@@ -135,5 +135,5 @@ block content
           .alert.alert-info
             strong Info:
             | No microtasks present...
-      .col-lg-6
+      .col-md-6
         mixin printObjects( task.objects )

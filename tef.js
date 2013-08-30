@@ -12,7 +12,7 @@ var glob = require( 'glob' );
 var path = require( 'path' );
 var moment = require( 'moment' );
 
-Showdown = require('showdown');
+var Showdown = require('showdown');
 var converter = new Showdown.converter();
 
 var config = require( './config' );
