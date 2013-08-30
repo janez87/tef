@@ -32,7 +32,7 @@ block header
 block content
 
   - var MICROTASKS_LIMIT = 60;
-
+  
   if !task
     .alert.alert-error
       h4 Error!
@@ -53,7 +53,7 @@ block content
         if !process.env.PRODUCTION
           button.btn.btn-small.btn-danger.delete(rel="task",href=task._id) Delete 
             i.icon-trash.icon-white
-        if task.status>10 && task.status<50
+        if task.status>=10 && task.status<50
           a.btn.btn-small.btn-primary(href="#{csUrl}api/landing?task=#{task._id}&show=true") Run Task! 
             i.icon-play.icon-white
     hr
