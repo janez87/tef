@@ -199,7 +199,7 @@ app.get('*', function randomUrlHandler( req, res ) {
 
 
 
-// HANDLE SERVER ERROR
+// Handle server error
 var serverError = function( error ) {
   log.error( error );
   if( error.code==='EADDRINUSE' )
