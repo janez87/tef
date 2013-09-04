@@ -1,6 +1,6 @@
 .list-controller
   .form-group
-    label(for="splitting_strategy_name") Strategy: 
+    label.required(for="splitting_strategy_name") Strategy:
     select.list-controller-name.form-control.input-small#splitting_strategy_name
       option(selected) None
       each strategy in splittingStrategies
@@ -13,6 +13,6 @@
   .param-container
     h4 Triggers on
     .event-list
-    h4 Parameters 
+    h4 Parameters
       span.badge 2
     .param-list

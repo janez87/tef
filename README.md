@@ -5,7 +5,7 @@
 * [node-bunyan][bunyan] installed globally using `npm install -g bunyan`
 
 ## Installation
-    git clone git clone http://crowdsearcher.search-computing.org/gitlab/crowdsearcher/tef.git TEF
+    git clone http://crowdsearcher.search-computing.org/gitlab/crowdsearcher/tef.git TEF
     cd TEF
     npm install -d
 

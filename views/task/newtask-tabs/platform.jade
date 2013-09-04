@@ -16,7 +16,7 @@
                 data-params=JSON.stringify( platform.params )
                 )= platform.name
           .input-group-btn
-            button.btn.btn-default.btn-small.list-controller-add Add 
+            button.btn.btn-default.btn-small.list-controller-add Add
               i.icon-plus
       .param-container
         h4 Platform settings
@@ -33,8 +33,8 @@
             input#platform_enabled(type="checkbox", data-name='enabled')
           label(for="platform_enabled") Is enabled?
         hr
-        h4 Platform parameters 
+        h4 Platform parameters
         .param-list
     .col-md-6
-      h3 Selected platforms
-      ul#selected_platforms.list-controller-selected
+      h3.required Selected platforms
+      ul#selected_platforms.list-controller-selected.required

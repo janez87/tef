@@ -19,9 +19,7 @@ block content
   .row
     .col-md-4
       ul.list-group.side-navigation(data-spy="affix",data-offset-top="121")
-        li.list-group-item.active(data-target='#home', data-toggle="collapse", data-parent="#accordion")
-          span.badge.badge-success.pull-right
-            i.icon-ok
+        li.list-group-item.required.active(data-target='#home', data-toggle="collapse", data-parent="#accordion")
           | Task info
         li.list-group-item(data-target='#landing', data-toggle="collapse", data-parent="#accordion")
           | Landing page
@@ -29,15 +27,11 @@ block content
         li.list-group-item
           h4.list-group-item-heading Platforms
           ul.list-group
-            li.list-group-item(data-target='#platform-selection', data-toggle="collapse", data-parent="#accordion")
-              span.badge.badge-danger.pull-right
-                i.icon-remove
+            li.list-group-item.required(data-target='#platform-selection', data-toggle="collapse", data-parent="#accordion")
               | Platform
 
         li.list-group-item
-          span.badge.badge-danger.pull-right
-            i.icon-remove
-          h4.list-group-item-heading
+          h4.list-group-item-heading.required
             | Data management
           ul.list-group
             li.list-group-item(data-target='#data_external', data-toggle="collapse", data-parent="#accordion")
@@ -54,9 +48,7 @@ block content
         li.list-group-item
           h4.list-group-item-heading Planning
           ul.list-group
-            li.list-group-item(data-target='#planning_splitting', data-toggle="collapse", data-parent="#accordion")
-              span.badge.badge-danger.pull-right
-                i.icon-remove
+            li.list-group-item.required(data-target='#planning_splitting', data-toggle="collapse", data-parent="#accordion")
               | Splitting strategy
             li.list-group-item(data-target='#planning_assignment', data-toggle="collapse", data-parent="#accordion") Assignment strategy
             li.list-group-item(data-target='#planning_execution', data-toggle="collapse", data-parent="#accordion") Execution strategy
