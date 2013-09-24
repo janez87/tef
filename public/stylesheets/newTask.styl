@@ -1,11 +1,21 @@
 @import vendor
 
-.badge-success
-  color #468847
-  background-color #dff0d8
-.badge-danger
-  color #b94a48
-  background-color #f2dede
+.header
+  &.affix
+    top 0
+    left 0
+    right 0
+    z-index 1000
+    background-color white
+    border-bottom 1px solid #ccc
+.side-navigation
+  &.affix
+    top 80px
+    width 293px
+
+.margin-top
+  margin-top 80px
+
 
 .required
   &:after
@@ -71,11 +81,6 @@
           margin 0
           font-weight normal
           cursor pointer
-
-
-.affix
-  top 10px
-  width 293px
 
 .icon-trash
   color black

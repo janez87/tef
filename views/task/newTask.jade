@@ -15,10 +15,14 @@ block append libScripts
 block scripts
   != js( 'newTask' )
 
+block header
+  .col-md-12.header(data-spy="affix",data-offset-top="0")
+    h1= title
+
 block content
   .row
     .col-md-4
-      ul.list-group.side-navigation(data-spy="affix",data-offset-top="121")
+      ul.list-group.side-navigation(data-spy="affix",data-offset-top="0")
         li.list-group-item.required.active(data-target='#home', data-toggle="collapse", data-parent="#accordion")
           | Task info
         li.list-group-item(data-target='#landing', data-toggle="collapse", data-parent="#accordion")
@@ -68,7 +72,7 @@ block content
           ul.list-group
             li.list-group-item: a(data-toggle="modal",href='#save') Review and save
 
-    .col-md-8
+    .col-md-8.margin-top
       .panel-group#accordion
         .panel.panel-default
           .panel-heading

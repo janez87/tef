@@ -57,9 +57,9 @@ npm-debug.log
 ### Skip data
 data/*
 public/compiledAssets
-intefaces/*
-!intefaces/default/
-!intefaces/task.js
+interfaces/**/*
+!interfaces/default/
+!interfaces/task.js
 
 # Uploads
 uploads

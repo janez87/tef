@@ -167,6 +167,24 @@ CS.getEnding = function getEnding( params, callback ) {
   apiCall( null, 'ending', params, callback );
 };
 
+CS.postJob = function postJob( data, callback ) {
+  log.trace( 'Posting Job' );
+
+  var options = {
+    url: url.resolve( config.csUrl, 'api/job' ),
+    json: data,
+    method: 'POST'
+  };
+
+  request( options, function( err, response, body ) {
+    if( err ) log.error( err );
+
+    if( !err && response.statusCode!==200 )
+      err = body;
+
+    return callback( err, body );
+  } );
+};
 CS.postTask = function postTask( data, callback ) {
   log.trace( 'Posting Task' );
 

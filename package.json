@@ -6,7 +6,7 @@
     "start": "node tef | bunyan -o short"
   },
   "dependencies": {
-    "underscore": "*",
+    "underscore": "1.5.*",
     "nconf": "*",
     "express": ">= 3",
     "request": "*",
@@ -17,7 +17,10 @@
     "jade": "*",
     "showdown": "*",
     "bunyan": "*",
-    "async": "*",
+    "async": "0.2.*",
     "glob": "*"
+  },
+  "devDependencies": {
+    "should": "~1.3.0"
   }
 }

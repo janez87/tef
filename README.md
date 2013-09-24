@@ -1,6 +1,7 @@
 # Task Execution Framework
 
 ## Requirements
+* [node][node] 0.6+
 * [CrowdSearcher][cs-git]
 * [node-bunyan][bunyan] installed globally using `npm install -g bunyan`
 
@@ -27,5 +28,6 @@ Contatc us!
 [cs-doc]: http://crowdsearcher.search-computing.org/software "CrowdSearcher documentation"
 [bunyan]: https://github.com/trentm/node-bunyan "Bunyan logger"
 [mongo]: http://www.mongodb.org "MongoDB"
+[node]: http://nodejs.org "NodeJS"
 [volox]: <mailto:riccardo.volonterio@polimi.it> "Riccardo Volonterio"
 [janez]: <mailto:andrea.mauri@polimi.it> "Andrea Mauri"
