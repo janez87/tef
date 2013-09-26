@@ -34,7 +34,10 @@ block content
       | Invalid Job ID!
   else
     .row
-      .col-md-12.text-right: .btn-group
+      .col-md-6
+        a.btn.btn-small.btn-default(href="#{baseUrl}task/new?job=#{job._id}") Add Task 
+          i.icon-plus
+      .col-md-6.text-right: .btn-group
         if !process.env.PRODUCTION
           button.btn.btn-small.btn-danger.delete(rel="job",href=job._id) Delete 
             i.icon-trash

@@ -5,13 +5,13 @@
   },
 
   "crowdsearcher": {
-    
+
     "useCache": false,
-    
+
     "url": {
       "protocol": "http",
-      "hostname": "localhost",
-      "port": 2100,
+      "hostname": "131.175.59.94",
+      "port": 80,
       "pathname": "/"
     }
   },
@@ -19,12 +19,12 @@
   "interfaces": {
     "path": "interfaces"
   },
-  
+
   "task_repository": {
     "customPath": "custom",
     "defaultPath": "defaults"
   },
-  
+
   "logger": {
     "level": "trace"
   }

@@ -3,20 +3,21 @@
     .form-group
       label.required(for='title') Title
       input#title.form-control.input-small(type='text', placeholder='Task title', required)
-    .form-group
+    - var jobData = job? 'none' : '';
+    .form-group(style='display: #{jobData}')
       label(for='alias') Alias
       input#alias.form-control.input-small(type='text', placeholder='Insert Alias', pattern='^[a-z\-0-9]+$')
-    .form-group
+    .form-group(style='display: #{jobData}')
       label(for='job') Job ID
-      input#job.form-control.input-small(type='text', placeholder='Insert Job ID')
+      input#job.form-control.input-small(type='text', placeholder='Insert Job ID', value=job)
     .input-group
       span.input-group-addon.input-small
         input#private(type='checkbox')
       label(for="private") Private?
   .col-md-6
     .form-group
-      label(for='question') Description
-      textarea#question.form-control(rows=3)
+      label(for='description_md') Description
+      textarea#description_md.form-control(rows=3)
 .list-controller
   .row
     .col-md-6

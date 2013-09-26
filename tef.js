@@ -109,7 +109,7 @@ app.get( '/configuration', require( './task-repo/configuration' ) );
 // Job
 app.get( '/job/new', require( './task-repo/newJob' ) );
 if( !process.env.PRODUCTION )
-  app.post( '/job/new', require( './task-repo/postjob' ) );
+  app.post( '/job/new', require( './task-repo/postJob' ) );
 if( !process.env.PRODUCTION )
   app.get( '/jobs', require( './task-repo/jobs' ) );
 

@@ -8,7 +8,7 @@ module.exports = exports = function( req, res, next ) {
   CS.getConfiguration( function( err, configuration ) {
     if( err ) return next( err );
 
-    log.trace( 'Config:', configuration );
+    configuration.job = req.query.job;
     res.render( 'task/newTask' , configuration );
   } );
 

@@ -48,11 +48,13 @@ createInput = ( config, name, index )->
   originalType = type
 
   type = 'text' if type=='string'
+  type = 'password' if type=='pass'
   type = 'text' if type=='platform'
   type = 'checkbox' if type=='boolean'
   placeholder = 'Insert '+name
   id = 'id_'+name
   value = config.default
+
   if value=='$baseUrl$'
     pathname = location.pathname.split '/'
     pathname.pop() # Remove "new"
@@ -76,6 +78,22 @@ createInput = ( config, name, index )->
 
   $input = $ '<input />'
   $input.attr 'type', type
+
+  if type=='enum'
+    $input = $ '<select>'
+
+    $.each config.values, (index, value)->
+      $option = $ '<option>'
+      text = index
+      text = value if $.isArray config.values
+      $option.text text
+      $option.val value
+
+      if index==config.default
+        $option.attr 'selected', 'selected'
+
+      $input.append $option
+
   $input.attr 'id', id
   $input.attr 'name', name
   $input.attr 'data-name', name
@@ -207,20 +225,18 @@ getJsonTaskData = ()->
 
   # Task info
   task.name = $( '#title' ).val()
-  task.description = $( '#question' ).val()
+  task.description = $( '#description_md' ).val()
   task.description = undefined if task.description.length==0
 
   task.landing = $( '#landing_md' ).val()
   task.landing = undefined if task.landing.length==0
+  task.ending = $( '#ending_md' ).val()
+  task.ending = undefined if task.ending.length==0
 
   task.private = $( '#private' ).prop 'checked'
   task.alias = $( '#alias' ).val()
   task.job = $( '#job' ).val()
   task.job = undefined if task.job.length==0
-
-  # Connect to the Job
-  #TODO add job
-  #task.job = $().val()
 
   # Task type
   task.operations = []
@@ -738,25 +754,7 @@ $ ->
     #$( dest ).show()
 
   # Task question management
-  $question = $ '#question'
-  ###
-  editor = new EpicEditor(
-    container: $question[0]
-    basePath: baseUrl
-    theme: {
-      base: 'themes/base/epiceditor.css',
-      preview: 'themes/preview/github.css',
-      editor: 'themes/editor/epic-light.css'
-    }
-    button: {
-      preview: true,
-      fullscreen: false,
-      bar: "auto"
-    } ).load();
-  $questionPreview = $ '#question_preview'
-  $question.on 'change keyup', ->
-    $questionPreview.html converter.makeHtml $question.val()
-  ###
+  $description = $ '#description'
 
   # Alias
   $title = $ '#title'
@@ -766,28 +764,10 @@ $ ->
     $alias.val slugify $title.val()
 
 
-  # Landing page preview
+  # markdown fields
+  $description = $ '#description_md'
   $landing = $ '#landing_md'
-  ###
-  editor = new EpicEditor(
-    container: $landing[0]
-    basePath: baseUrl
-    theme: {
-      base: 'themes/base/epiceditor.css',
-      preview: 'themes/preview/preview-dark.css',
-      editor: 'themes/editor/epic-light.css'
-    }
-    button: {
-      preview: true,
-      fullscreen: true,
-      bar: "auto"
-    }
-    autogrow: true
-   ).load();
-  $landingPreview = $ '#landing_preview'
-  $landing.on 'change keyup', ->
-    $landingPreview.html converter.makeHtml $landing.val()
-  ###
+  $ending = $ '#ending_md'
 
   # List controller
   $listControllers = $ '.list-controller'

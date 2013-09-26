@@ -27,6 +27,8 @@ block content
           | Task info
         li.list-group-item(data-target='#landing', data-toggle="collapse", data-parent="#accordion")
           | Landing page
+        li.list-group-item(data-target='#ending', data-toggle="collapse", data-parent="#accordion")
+          | Ending page
 
         li.list-group-item
           h4.list-group-item-heading Platforms
@@ -86,7 +88,23 @@ block content
             a.accordion-toggle(href="#landing",data-toggle="collapse",data-parent="#accordion") Landing page
           #landing.panel-collapse.collapse
             .panel-body
-              include newtask-tabs/landing
+              .row
+                .col-lg-12
+                  p.help-block Insert 
+                    a(href='http://daringfireball.net/projects/markdown/syntax', target='_blank') markdown 
+                    | here:
+                  textarea#landing_md.form-control(rows='7')
+        .panel.panel-default
+          .panel-heading
+            a.accordion-toggle(href="#ending",data-toggle="collapse",data-parent="#accordion") Ending page
+          #ending.panel-collapse.collapse
+            .panel-body
+              .row
+                .col-lg-12
+                  p.help-block Insert 
+                    a(href='http://daringfireball.net/projects/markdown/syntax', target='_blank') markdown 
+                    | here:
+                  textarea#ending_md.form-control(rows='7')
 
         .panel.panel-default
           .panel-heading

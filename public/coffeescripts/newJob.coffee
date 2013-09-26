@@ -227,6 +227,10 @@ $ ->
             <i class='icon-chevron-left'></i>
             Go to Job
           </a>
+          <a href='task/new?job=#{data.job}' class='btn btn-small btn-info'>
+            Create a task for the Job
+            <i class='icon-chevron-right'></i>
+          </a>
         </div>
       """
 
