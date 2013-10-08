@@ -5,8 +5,8 @@ var path = require( 'path' );
 var nconf = require( 'nconf' );
 var bunyan = require('bunyan');
 
-const CONFIGURATION_FILE = path.join( __dirname, 'configuration.json' );
-const OVERRIDE_FILE = path.join( __dirname, 'override.json' );
+var CONFIGURATION_FILE = path.join( __dirname, 'configuration.json' );
+var OVERRIDE_FILE = path.join( __dirname, 'override.json' );
 
 var config = {};
 
@@ -16,7 +16,7 @@ try {
   // Load configuration with nconf
   nconf.argv();
   nconf.env();
-  nconf.file( 'user', OVERRIDE_FILE );  
+  nconf.file( 'user', OVERRIDE_FILE );
   nconf.file( 'global', CONFIGURATION_FILE );
 } catch( err ) {
   console.error( err );

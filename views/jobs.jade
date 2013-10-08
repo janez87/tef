@@ -18,6 +18,8 @@ block append css
 
 block content
   h2 Job list
+    a.btn.btn-default(href="job/new") New Job 
+      i.icon-plus
   if jobs && jobs.length>0
     ul.job-list
       each job in jobs
