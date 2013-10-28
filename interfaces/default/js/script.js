@@ -1,5 +1,6 @@
-/* global CSM */
+/* global CSM, markdown */
 ( function() {
+
   var csm = new CSM();
 
   // IDs
@@ -13,17 +14,18 @@
     var $div = $( '<div></div>' );
     $div.addClass( 'action '+operation.name );
     $div.attr( 'data-operation', operation._id );
-    var $btn = $( '<button class="btn btn-link"><i class="icon-check-empty"></i> Liked?</button>' );
-    
+
+    var $btn = $( '<button class="btn btn-link"><i class="fa fa-square-o"></i> Liked?</button>' );
+
     $btn.on( 'click', function() {
       var $i = $btn.find( 'i:first' );
-      var liked = !$i.hasClass( 'icon-check' );
+      var liked = !$i.hasClass( 'fa fa-check-square-o' );
 
-      $i.removeClass( 'icon-check-empty icon-check' );
+      $i.removeClass( 'fa fa-square-o fa fa-check-square-o' );
       if( liked ) {
-        $i.addClass( 'icon-check' );
+        $i.addClass( 'fa fa-check-square-o' );
       } else {
-        $i.addClass( 'icon-check-empty' );
+        $i.addClass( 'fa fa-square-o' );
       }
 
 
@@ -191,18 +193,14 @@
       //$tr.append( '<td class="id" title="'+obj._id+'">'+obj._id+'</td>' );
 
       // Data
-      var $td = $( '<td><dl></dl></td>' );
-      var $dl = $td.find( 'dl' );
-      $.each( obj.data, function( key, value ) {
-        $dl.append( '<dt title="'+key+'">'+key+'</dt>' );
-        $dl.append( '<dd>'+value+'</dd>' );
-      } );
+      var $td = $( '<td></td>' );
+      $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' )
       $tr.append( $td );
 
 
       // Actions
       $.each( taskObj.operations, function() {
-        
+
         var $td = $( '<td></td>' );
         var action = actions[ this.name ];
         if( action && action.create ) {
@@ -230,7 +228,7 @@
     $name.prepend( task.name );
 
     var $description = $( '.description' );
-    $description.html( task.description );
+    $description.html( markdown.toHTML( task.description ) );
 
     csm.getMicrotask( {
       id: microtaskId,
@@ -277,7 +275,7 @@
 
   var $send = $( '.send' );
   $send.click( function() {
-    
+
     $send.button( 'loading' );
 
     $modal.find( '#more' ).prop( 'disabled', false );

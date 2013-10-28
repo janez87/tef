@@ -35,13 +35,13 @@ block content
   else
     .row
       .col-md-6
-        a.btn.btn-small.btn-default(href="#{baseUrl}task/new?job=#{job._id}") Add Task 
+        a.btn.btn-sm.btn-default(href="#{baseUrl}task/new?job=#{job._id}") Add Task 
           i.icon-plus
       .col-md-6.text-right: .btn-group
         if !process.env.PRODUCTION
-          button.btn.btn-small.btn-danger.delete(rel="job",href=job._id) Delete 
+          button.btn.btn-sm.btn-danger.delete(rel="job",href=job._id) Delete 
             i.icon-trash
-          a.btn.btn-small.btn-primary(href="#{csUrl}api/landing?job=#{job._id}") Run job! 
+          a.btn.btn-sm.btn-primary(href="#{csUrl}api/landing?job=#{job._id}") Run job! 
             i.icon-play.icon-white
     hr
 

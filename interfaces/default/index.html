@@ -8,9 +8,6 @@
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
     <!-- Font Awesome -->
     <link href="css/font-awesome.min.css" rel="stylesheet" media="screen">
-    <!--[if IE 7]>
-      <link href="css/font-awesome-ie7.min.css" rel="stylesheet" media="screen">
-    <![endif]-->
     <!-- Default style -->
     <link href="css/style.css" rel="stylesheet" media="screen">
 
@@ -22,7 +19,7 @@
   </head>
   <body>
     <div class="container">
-      
+
       <!-- Header -->
       <div class="row header">
         <div class="col-md-3 text-left">
@@ -39,7 +36,7 @@
           </a>
         </div>
       </div>
-      
+
       <hr>
 
       <!-- Send button -->
@@ -50,16 +47,16 @@
         <div class="col-md-3 text-right">
           <button class="send btn btn-primary" data-loading="Posting answer...">
             Send
-            <i class="icon-envelope"></i>
+            <i class="fa fa-envelope-o"></i>
           </button>
         </div>
       </div>
-      
+
       <hr>
 
       <!-- Data -->
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover table-condensed table-bordered">
           <thead>
             <tr id="headers">
               <th width="50%">Data</th>
@@ -79,11 +76,11 @@
         <div class="col-md-3 text-right">
           <button class="send btn btn-primary" data-loading="Posting answer...">
             Send
-            <i class="icon-envelope"></i>
+            <i class="fa fa-envelope-o"></i>
           </button>
         </div>
       </div>
-      
+
       <!-- Footer -->
       <div class="row footer">
         <div class="col-md-12 text-right">
@@ -114,13 +111,15 @@
     <!-- Include the Task script the enable easy data exchange with CS -->
     <script src="../task.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/markdown.js"></script>
+    <script src="js/moment.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
 
 <!--
-        
+
 
     <div id="modal" class="modal hide fade" data-backdrop="static" data-keyboard="false">
       <div class="modal-header">
@@ -134,7 +133,7 @@
         <button id="more" class="btn btn-success pull-right back">Do one more!</button>
       </div>
     </div>
-    
+
 
     <script src="../task.js"></script>
     <script src="script.js"></script>
