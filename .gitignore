@@ -57,14 +57,14 @@ npm-debug.log
 ### Skip data
 data/*
 public/compiledAssets
-interfaces/**/*
-!interfaces/default/
+!interfaces/
 !interfaces/task.js
+interfaces/*
+!interfaces/default/
+interfaces/**/*
 
 # Uploads
 uploads
-images
-out
 
 # Ignore override config file
 config/override.json
