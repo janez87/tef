@@ -58,9 +58,9 @@ npm-debug.log
 data/*
 public/compiledAssets
 
+interfaces/*
 !interfaces/task.js
 !interfaces/default/
-interfaces/*
 
 # Uploads
 uploads
