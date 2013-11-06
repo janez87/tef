@@ -4,7 +4,7 @@
   var csm = new CSM();
 
   // IDs
-  var jobId, taskId, microtaskId, executionId;
+  var jobId, taskId, microtaskId, executionId, performerId;
   var taskObj;
 
 
@@ -185,6 +185,8 @@
 
     $.each( objects, function() {
       var obj = this;
+      if( obj.closed ) return;
+
       //var data = obj.data;
       var $tr = $( '<tr></tr>' );
       $tr.attr( 'data-id', obj._id );
@@ -194,7 +196,7 @@
 
       // Data
       var $td = $( '<td></td>' );
-      $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' )
+      $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' );
       $tr.append( $td );
 
 
@@ -244,6 +246,7 @@
     taskId = execution.task;
     microtaskId = execution.microtask;
     executionId = execution.id;
+    performerId = execution.performer;
 
     if( execution.closed ) {
       $modal.find( '.modal-header .modal-title' ).text( 'Execution closed'  );
@@ -281,6 +284,8 @@
     var url = location.protocol+'//';
     url += location.host;
     url += '/run/?task='+taskId;
+    if( performerId )
+      url += '&performer='+performerId;
     //console.log( url );
     location.href = url;
   } );

@@ -6,9 +6,12 @@ var CS = require( './CS' );
 
 module.exports = exports = function( req, res, next ) {
   CS.startExecution( req.query, function executionRetrieved( err, data ) {
+    console.log( 'err data', err, data );
+
     if( err && data.id==='UNAUTHORIZED' ) {
       var loginUrl = url.resolve( config.csUrl, 'login' );
       req.query.continueTo = data.requestedUrl;
+      console.log( 'loginUrl data.requestedUrl', loginUrl, data.requestedUrl );
       return res.redirect( loginUrl+'?'+querystring.stringify( req.query ) );
     }
 
@@ -26,9 +29,11 @@ module.exports = exports = function( req, res, next ) {
 
     if( err && handleError ) {
       var endingUrl = url.resolve( config.csUrl, 'api/ending' );
+      console.log( 'endingUrl', endingUrl );
       return res.redirect( endingUrl+'?'+querystring.stringify( req.query ) );
     }
 
+    console.log( 'data.url', data.url );
     return res.redirect( data.url );
   });
 };
