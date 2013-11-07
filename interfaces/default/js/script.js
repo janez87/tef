@@ -4,7 +4,7 @@
   var csm = new CSM();
 
   // IDs
-  var jobId, taskId, microtaskId, executionId;
+  var jobId, taskId, microtaskId, executionId, performerId;
   var taskObj;
 
 
@@ -185,6 +185,8 @@
 
     $.each( objects, function() {
       var obj = this;
+      if( obj.closed ) return;
+
       //var data = obj.data;
       var $tr = $( '<tr></tr>' );
       $tr.attr( 'data-id', obj._id );
@@ -194,7 +196,7 @@
 
       // Data
       var $td = $( '<td></td>' );
-      $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' )
+      $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' );
       $tr.append( $td );
 
 
@@ -244,10 +246,19 @@
     taskId = execution.task;
     microtaskId = execution.microtask;
     executionId = execution.id;
+    performerId = execution.performer;
 
-    csm.getTask( {
-      id: taskId
-    }, printData );
+    if( execution.closed ) {
+      $modal.find( '.modal-header .modal-title' ).text( 'Execution closed'  );
+      $modal.find( '.modal-body' ).html( '<p class="text-error">The current execution is closed.</p>' );
+
+      $modal.modal( 'show' );
+    } else {
+      return csm.getTask( {
+        id: taskId
+      }, printData );
+    }
+
   }
 
 
@@ -260,15 +271,21 @@
   // handle the save button
   var $modal = $( '#modal' );
   $modal.find( '#close' ).click( function() {
+    window.close();
+    return false;
+    /*
     var url = location.protocol+'//';
     url += location.host;
-    url += '/task/'+taskId;
+    url += '/ending/?task='+taskId;
     location.href = url;
+    */
   } );
   $modal.find( '#more' ).click( function() {
     var url = location.protocol+'//';
     url += location.host;
     url += '/run/?task='+taskId;
+    if( performerId )
+      url += '&performer='+performerId;
     //console.log( url );
     location.href = url;
   } );
@@ -277,8 +294,6 @@
   $send.click( function() {
 
     $send.button( 'loading' );
-
-    $modal.find( '#more' ).prop( 'disabled', false );
 
     var $objects = $( '#objects' );
 
@@ -292,20 +307,15 @@
       postData.push( operationData );
     } );
 
-    console.log.apply( console, postData );
     csm.postAnswer( postData, function( err, data ) {
       if( err ) {
-        $modal.find( '.modal-header h3' ).text( err );
+        $modal.find( '.modal-header .modal-title' ).text( err );
         $modal.find( '.modal-body' ).html( '<p class="text-error">'+data.id+'</p><p class="text-error">'+data.message+'</p>' );
-
-        if( data.id!=='EXECUTION_CLOSED' )
-          $modal.find( '#more' ).prop( 'disabled', true );
 
         $send.button( 'reset' );
       } else {
-        $modal.find( '.modal-header h3' ).text( 'Post success' );
+        $modal.find( '.modal-header .modal-title' ).text( 'Post success' );
         $modal.find( '.modal-body' ).html( '<p class="text-success text-center">Data sent!</p>' );
-        $modal.find( '#more' ).prop( 'disabled', false );
       }
 
       $modal.modal( 'show' );

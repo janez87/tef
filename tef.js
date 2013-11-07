@@ -143,6 +143,9 @@ app.get( '/run', require( './task-repo/run' ) );
 app.get( '/answer', require( './task-repo/answer' ) );
 app.post( '/answer', require( './task-repo/postAnswer' ) );
 
+// Ending
+app.get( '/ending', require( './task-repo/ending' ) );
+
 // Run
 app.get( '/task.js', function( req, res ) {
   res.type( '.js' );
@@ -184,7 +187,7 @@ _.each( interfaceList, function( interfaceName ) {
 } );
 
 // Handle random request
-app.get('*', function randomUrlHandler( req, res ) {
+app.all('*', function randomUrlHandler( req, res ) {
   log.trace( 'Requested "%s" by %s', req.originalUrl, req.ip );
   res.status( 404 );
   res.format( {
