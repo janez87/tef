@@ -1,127 +1,251 @@
 // Wrap the function so it wont pollute the global object
-( function createObject( window, $ ) {
+( function( w, $ ) {
 
-  var qs = {};
-  var params = location.search.slice( 1 ).split( '&' );
-  for (var i = 0; i < params.length; i++) {
-    var matches = params[i].match( /(.*)?=(.*)?/i );
-    if( matches ) {
-      qs[ matches[1] ] = qs[ matches[1] ] || [];
-      qs[ matches[1] ].push( matches[2] );
+  // # Module-wide available properties
+  //
+  // TEF compiled fields
+  var csBaseUrl = '${csUrl}';
+
+
+  // ## Parse query string
+  //
+  function parseQueryString( querystringInput ) {
+    // Use the passed querystring or retrive it from the location.
+    querystringInput = querystringInput || location.search.slice( 1 );
+
+    var querystring = {};
+    var params = querystringInput.split( '&' );
+    for (var i = 0; i < params.length; i++) {
+      var matches = params[i].match( /(.*)?=(.*)?/i );
+      if( matches ) {
+        var key = matches[ 1 ];
+        var value = matches[ 2 ];
+        if( querystring[ key ] ) {
+          if( !$.isArray( querystring[ key ] ) )
+            querystring[ key ] = [ querystring[ key ] ];
+          querystring[ key ].push( value );
+        } else {
+          querystring[ key ] = value;
+        }
+      }
     }
+
+    return querystring;
   }
 
-  var CrowdSearcherManager = function( id ) {
-    if( $.type( id )==='undefined' ) {
-      console.log( 'Infer the id from the location.search property' );
-      id = qs.execution? qs.execution[ 0 ] : null;
+  // # CrowdSearcher class
+  //
+  function CrowdSearcher( url ) {
+    if( !url )
+      throw new Error( 'Missing url' );
 
-      if( !id )
-        return alert( 'Unable to infer the execution id from\n"'+location.search+'"' );
-    }
+    if( url[url.length-1]==='/' )
+      url = url.slice( 0, -1 );
 
-    this.execution = id;
-    console.log( 'Execution id:', this.execution );
+    this.baseUrl = url+'/api/';
+  }
 
-    // Strip index.html and "operation"
-    var appUrl = location.pathname.split('/').slice( 0, -2 ).join( '/' )+'/';
-    this.baseUrl = location.protocol+'//'+location.host+appUrl;
-    console.log( 'Base url: ', this.baseUrl );
-  };
-
-  // Call API main method
-  CrowdSearcherManager.prototype.callAPI = function( data, callback ) {
+  CrowdSearcher.prototype.callAPI = function( data, callback ) {
     var api = data.api;
-    var id = data.id;
-    var settings = $.isFunction( data.settings )? null : data.settings;
+    var method = data.method || 'GET';
+    var body = data.data;
+    method = method.toUpperCase();
 
-    if( $.type( api )!=='string' ) {
-      return alert( 'No API specified' );
+    var url = this.baseUrl + api;
+    // Append query string
+    if( data.qs )
+      url += '?'+$.param( data.qs );
+
+    var req = $.ajax( {
+      url: url,
+      processData: false,
+      type: method,
+      contentType: 'application/json; charset=UTF-8',
+      dataType: 'json',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      data: JSON.stringify( body )
+    } );
+
+
+    if( $.isFunction( callback ) ) {
+      req.done( function requestSuccess( data ) {
+        return callback( null, data );
+      } );
+
+      req.fail( function requestFailed( jqXHR, status, err ) {
+        return callback( err );
+      } );
     }
 
-    if( !$.isFunction( callback ) ) {
-      return alert( 'No callback specified' );
-    }
-
-    var url = this.baseUrl+api+'/'+id;
-    var request = $.getJSON( url, settings );
-    request.done( function( data ) {
-      return callback( null, data );
-    } );
-    request.fail( function( xhr, status, error ) {
-      return callback( error );
-    } );
-
-    return request;
+    return req;
   };
 
-  // API calls
-  CrowdSearcherManager.prototype.getExecution = function( settings, callback ) {
+
+  // ## Getters
+  //
+  CrowdSearcher.prototype.getExecution = function( inputData, callback ) {
+    if( $.type( inputData )==='string' )
+      inputData = { execution: inputData };
+
     var data = {
       api: 'execution',
-      id: this.execution,
-      settings: settings
+      method: 'GET',
+      qs: inputData
     };
-
-    if( !$.isFunction( callback ) )
-      callback = settings;
-
     return this.callAPI( data, callback );
   };
-  CrowdSearcherManager.prototype.getJob = function( data, callback ) {
-    data = {
-      api: 'job',
-      id: data.id,
-      settings: data.settings
-    };
 
-    return this.callAPI( data, callback );
-  };
-  CrowdSearcherManager.prototype.getTask = function( data, callback ) {
-    data = {
-      api: 'task',
-      id: data.id,
-      settings: data.settings
-    };
+  CrowdSearcher.prototype.getMicrotask = function( inputData, callback ) {
+    if( $.type( inputData )==='string' )
+      inputData = { microtask: inputData };
 
-    return this.callAPI( data, callback );
-  };
-  CrowdSearcherManager.prototype.getMicrotask = function( data, callback ) {
-    data = {
+    var data = {
       api: 'microtask',
-      id: data.id,
-      settings: data.settings
+      method: 'GET',
+      qs: inputData
     };
-
     return this.callAPI( data, callback );
   };
-  CrowdSearcherManager.prototype.getObject = function( data, callback ) {
-    data = {
+  CrowdSearcher.prototype.getTask = function( inputData, callback ) {
+    if( $.type( inputData )==='string' )
+      inputData = { task: inputData };
+
+    var data = {
+      api: 'task',
+      method: 'GET',
+      qs: inputData
+    };
+    return this.callAPI( data, callback );
+  };
+  CrowdSearcher.prototype.getJob = function( inputData, callback ) {
+    if( $.type( inputData )==='string' )
+      inputData = { job: inputData };
+
+    var data = {
+      api: 'job',
+      method: 'GET',
+      qs: inputData
+    };
+    return this.callAPI( data, callback );
+  };
+  CrowdSearcher.prototype.getObject = function( inputData, callback ) {
+    if( $.type( inputData )==='string' )
+      inputData = { object: inputData };
+
+    var data = {
       api: 'object',
-      id: data.id,
-      settings: data.settings
+      method: 'GET',
+      qs: inputData
     };
-
     return this.callAPI( data, callback );
   };
-  CrowdSearcherManager.prototype.getObjects = function( data, callback ) {
-    data = {
-      api: 'object',
-      ids: data.ids,
-      settings: data.settings
-    };
+  CrowdSearcher.prototype.getUser = function( inputData, callback ) {
+    if( $.type( inputData )==='string' )
+      inputData = { user: inputData };
 
-    return this.callAPI( data, callback );
-  };
-  CrowdSearcherManager.prototype.getUser = function( data, callback ) {
-    data = {
+    var data = {
       api: 'user',
-      id: data.id,
-      settings: data.settings
+      method: 'GET',
+      qs: inputData
     };
-
     return this.callAPI( data, callback );
   };
+  CrowdSearcher.prototype.getPerformer = CrowdSearcher.prototype.getUser;
+
+
+  // ## Setters
+  //
+
+
+
+
+
+
+  // # Operations implementation
+  //
+  var operationImplementation = {};
+
+  // ## Classify
+  //
+  operationImplementation[ 'classify' ] = function createClassify( operation ) {
+    var $div = $( '<div></div>' );
+    $div.addClass( 'action '+operation.name );
+    $div.attr( 'data-operation', operation._id );
+
+    var categories = operation.params.categories;
+    var select = '<select class="form-control">';
+    $.each( categories, function( i, category ) {
+      select += '<option data-category="'+category+'">'+category+'</option>';
+    } );
+    select += '</select>';
+
+    $div.append( select );
+    return $div;
+  };
+
+  // ## Like
+  //
+  operationImplementation[ 'like' ] = function createLike( operation ) {
+    var $div = $( '<div></div>' );
+    $div.addClass( 'action '+operation.name );
+    $div.attr( 'data-operation', operation._id );
+
+    var $btn = $( '<button class="btn btn-link"><i class="fa fa-square-o"></i> Liked?</button>' );
+
+    $btn.on( 'click', function() {
+      var $i = $btn.find( 'i:first' );
+      var liked = !$i.hasClass( 'fa fa-check-square-o' );
+
+      $i.removeClass( 'fa fa-square-o fa fa-check-square-o' );
+      if( liked ) {
+        $i.addClass( 'fa fa-check-square-o' );
+      } else {
+        $i.addClass( 'fa fa-square-o' );
+      }
+
+      $div.attr( 'data-liked', liked );
+    } );
+
+    $div.append( $btn );
+
+    return $div;
+  };
+
+  // ## Tag
+  //
+  operationImplementation[ 'tag' ] = function createTag( operation ) {
+    var $div = $( '<div></div>' );
+    $div.addClass( 'action '+operation.name );
+    $div.attr( 'data-operation', operation._id );
+
+    $div.append('<input type="text" class="form-control">' );
+    return $div;
+  };
+
+
+
+
+
+
+
+  // # Exports
+  //
+  window.CS = {
+    // Operation list
+    operationImplementation: operationImplementation,
+
+    // CS class
+    instance: new CrowdSearcher( csBaseUrl ),
+    constructor: CrowdSearcher,
+
+    // QueryString
+    qs: parseQueryString(),
+    parseQueryString: parseQueryString
+  };
+} )( window, jQuery );
+/*
 
   // Post answer
   CrowdSearcherManager.prototype.postAnswer = function( data, callback ) {
@@ -154,8 +278,5 @@
     } );
   };
 
-
-  console.log( 'CrowdSearcherManager ready' );
-  window.CSM = window.CrowdSearcherManager = CrowdSearcherManager;
-  window.qs = window.querystring = qs;
 })( window, jQuery );
+*/

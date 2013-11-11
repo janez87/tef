@@ -1,9 +1,0 @@
-mixin printStatus( status )
-  - var statusText = { '0': 'CREATED', '10': 'OPENED', '20': 'FINALIZED', '30': 'WAIT', '40': 'SUSPENDED', '50': 'CLOSED' };
-  - status = status? status : 0;
-  - classToAdd = 'label-info';
-  if status>10
-    - classToAdd = '';
-  if status===50
-    - classToAdd = 'label-danger';
-  span.label(class=classToAdd)= statusText[ status ]

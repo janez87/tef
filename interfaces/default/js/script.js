@@ -1,4 +1,116 @@
-/* global CSM, markdown */
+/* jshint browser: true */
+/* global CS */
+
+
+var cs = CS.instance;
+
+var execution;
+var $sendBtn = $( '.send' );
+var $modal = $( '#modal' );
+var $closeBtn = $( '#close', $modal );
+var $moreBtn = $( '#more', $modal );
+
+var $modal = $( '#modal' );
+$closeBtn.click( function() {
+  window.close();
+  return false;
+} );
+
+
+// Error handlers
+function winError( title, text ) {
+  $modal.find( '.modal-header .modal-title' ).text( title );
+  $modal.find( '.modal-body' ).html( '<p class="text-error">'+text+'</p>' );
+
+  $modal.modal( 'show' );
+}
+function handleError( jqXHR ) {
+  var json = jqXHR.responseJSON;
+  return winError( json.id, json.message );
+}
+
+
+// Main display function
+function displayObjects( objects, operations ) {
+  var $objects = $( '#objects' );
+  var $headers = $( '#headers' );
+  $.each( operations, function( i, op ) {
+    $headers.append( '<th class="action">'+op.label+'</th>' );
+  } );
+
+  $.each( objects, function( i, obj ) {
+
+    var $tr = $( '<tr></tr>' );
+    $tr.attr( 'data-id', obj._id );
+
+    // Data
+    var $td = $( '<td></td>' );
+    $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' );
+    $tr.append( $td );
+
+    // Operations
+    $.each( operations, function( i, op ) {
+      var $td = $( '<td></td>' );
+
+      var opImpl = CS.operationImplementation[ op.name ];
+      if( opImpl ) {
+        $td.append( opImpl( op ) );
+      } else {
+        $td.append( 'Woops... not implemented' );
+      }
+
+      $tr.append( $td );
+    } );
+
+    $objects.append( $tr );
+  } );
+}
+
+
+// Main entry point
+cs.getExecution( CS.qs.execution )
+.done( function( json ) {
+  execution = json;
+
+  if( execution.closed )
+    return winError( 'Execution closed', 'The current execution is closed.' );
+
+
+  var moreUrl = cs.baseUrl+'run?task='+execution.task;
+  if( execution.performer )
+    moreUrl += '&performer='+execution.performer;
+  $moreBtn.attr( 'href', moreUrl );
+
+  cs.getMicrotask( {
+    microtask: json.microtask,
+    populate: [ 'objects', 'platforms', 'operations' ]
+  } ).done( function( json ) {
+
+    // Filter out the closed objects
+    var objects = $.grep( json.objects, function( obj ) {
+      return !obj.closed;
+    } );
+
+    if( objects.length===0 )
+      return winError( 'No available objects', 'The current execution have no available objects.' );
+
+    return displayObjects( objects, json.operations );
+  } )
+  .fail( handleError );
+
+  cs.getTask( {
+    task: json.task
+  } ).done( function( json ) {
+
+    $( '#name' ).text( json.name );
+    $( '.description' ).html( markdown.toHTML( json.description ) );
+
+  } )
+  .fail( handleError );
+} )
+.fail( handleError );
+
+/*
 ( function() {
 
   var csm = new CSM();
@@ -164,132 +276,6 @@
 
 
 
-
-
-
-
-
-
-
-
-  // Create UI
-
-  function printObjects( err, objects ) {
-    if( err ) return console.error( err );
-
-    var $objects = $( '#objects' );
-    var $headers = $( '#headers' );
-    $.each( taskObj.operations, function() {
-      $headers.append( '<th class="action">'+this.label+'</th>' );
-    });
-
-    $.each( objects, function() {
-      var obj = this;
-      if( obj.closed ) return;
-
-      //var data = obj.data;
-      var $tr = $( '<tr></tr>' );
-      $tr.attr( 'data-id', obj._id );
-
-      // ID
-      //$tr.append( '<td class="id" title="'+obj._id+'">'+obj._id+'</td>' );
-
-      // Data
-      var $td = $( '<td></td>' );
-      $td.append( '<pre>'+JSON.stringify( obj.data, null, 2 )+'</pre>' );
-      $tr.append( $td );
-
-
-      // Actions
-      $.each( taskObj.operations, function() {
-
-        var $td = $( '<td></td>' );
-        var action = actions[ this.name ];
-        if( action && action.create ) {
-          $td.append( action.create( this ) );
-        } else {
-          $td.append( 'Woops... not implemented' );
-        }
-
-        $tr.append( $td );
-      } );
-
-      $objects.append( $tr );
-    } );
-  }
-  function getObjects( err, microtask ) {
-    if( err ) return console.error( err );
-
-    printObjects( null, microtask.objects );
-  }
-  function printData( err, task ) {
-    if( err ) return console.error( err );
-    taskObj = task;
-
-    var $name = $( '#name' );
-    $name.prepend( task.name );
-
-    var $description = $( '.description' );
-    $description.html( markdown.toHTML( task.description ) );
-
-    csm.getMicrotask( {
-      id: microtaskId,
-      settings: {
-        shuffle: true
-      }
-    }, getObjects );
-  }
-  function getTask( err, execution ) {
-    if( err ) return console.error( err );
-
-    jobId = execution.job;
-    taskId = execution.task;
-    microtaskId = execution.microtask;
-    executionId = execution.id;
-    performerId = execution.performer;
-
-    if( execution.closed ) {
-      $modal.find( '.modal-header .modal-title' ).text( 'Execution closed'  );
-      $modal.find( '.modal-body' ).html( '<p class="text-error">The current execution is closed.</p>' );
-
-      $modal.modal( 'show' );
-    } else {
-      return csm.getTask( {
-        id: taskId
-      }, printData );
-    }
-
-  }
-
-
-
-  // Entry point
-  csm.getExecution( null, getTask );
-
-
-
-  // handle the save button
-  var $modal = $( '#modal' );
-  $modal.find( '#close' ).click( function() {
-    window.close();
-    return false;
-    /*
-    var url = location.protocol+'//';
-    url += location.host;
-    url += '/ending/?task='+taskId;
-    location.href = url;
-    */
-  } );
-  $modal.find( '#more' ).click( function() {
-    var url = location.protocol+'//';
-    url += location.host;
-    url += '/run/?task='+taskId;
-    if( performerId )
-      url += '&performer='+performerId;
-    //console.log( url );
-    location.href = url;
-  } );
-
   var $send = $( '.send' );
   $send.click( function() {
 
@@ -322,3 +308,4 @@
     } );
   } );
 } )();
+*/
