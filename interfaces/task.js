@@ -157,6 +157,19 @@
 
   // ## Setters
   //
+  CrowdSearcher.prototype.postAnswer = function( executionId, answers, callback ) {
+    if( !$.isArray( answers ) )
+      answers = [ answers ];
+
+    var data = {
+      api: 'answer/'+executionId,
+      method: 'POST',
+      data: {
+        data: answers
+      }
+    };
+    return this.callAPI( data, callback );
+  };
 
 
 
@@ -166,64 +179,97 @@
   // # Operations implementation
   //
   var operationImplementation = {};
+  function createOperationContainer( operation, object ) {
+    var $div = $( '<div></div>' );
+    // Add the Operation type
+    $div.addClass( 'cs-operation-'+operation.name );
+    $div.addClass( 'cs-operation' );
+
+    $div.attr( 'data-operation-name', operation.name );
+    $div.attr( 'data-operation', operation._id );
+    $div.attr( 'data-object', object._id );
+
+    return $div;
+  }
 
   // ## Classify
   //
-  operationImplementation[ 'classify' ] = function createClassify( operation ) {
-    var $div = $( '<div></div>' );
-    $div.addClass( 'action '+operation.name );
-    $div.attr( 'data-operation', operation._id );
+  operationImplementation[ 'classify' ] = {
+    create: function createClassify( operation, object ) {
+      var $div = createOperationContainer( operation, object );
 
-    var categories = operation.params.categories;
-    var select = '<select class="form-control">';
-    $.each( categories, function( i, category ) {
-      select += '<option data-category="'+category+'">'+category+'</option>';
-    } );
-    select += '</select>';
+      var categories = operation.params.categories;
+      var select = '<select class="form-control">';
+      $.each( categories, function( i, category ) {
+        select += '<option data-category="'+category+'">'+category+'</option>';
+      } );
+      select += '</select>';
 
-    $div.append( select );
-    return $div;
+      $div.append( select );
+      return $div;
+    },
+    retrieve: function retrieveClassify( div ) {
+      var $div  = $( div );
+      var $selectedOption = $( 'select option:selected', $div );
+
+      return $selectedOption.data( 'category' );
+    }
   };
 
   // ## Like
   //
-  operationImplementation[ 'like' ] = function createLike( operation ) {
-    var $div = $( '<div></div>' );
-    $div.addClass( 'action '+operation.name );
-    $div.attr( 'data-operation', operation._id );
+  operationImplementation[ 'like' ] = {
+    create: function createLike( operation, object ) {
+      var $div = createOperationContainer( operation, object );
 
-    var $btn = $( '<button class="btn btn-link"><i class="fa fa-square-o"></i> Liked?</button>' );
+      var $btn = $( '<button class="btn btn-link"><i class="fa fa-square-o"></i> Liked?</button>' );
 
-    $btn.on( 'click', function() {
-      var $i = $btn.find( 'i:first' );
-      var liked = !$i.hasClass( 'fa fa-check-square-o' );
+      $btn.on( 'click', function() {
+        var $i = $btn.find( 'i:first' );
+        var liked = !$i.hasClass( 'fa fa-check-square-o' );
 
-      $i.removeClass( 'fa fa-square-o fa fa-check-square-o' );
-      if( liked ) {
-        $i.addClass( 'fa fa-check-square-o' );
-      } else {
-        $i.addClass( 'fa fa-square-o' );
-      }
+        $i.removeClass( 'fa fa-square-o fa fa-check-square-o' );
+        if( liked ) {
+          $i.addClass( 'fa fa-check-square-o' );
+        } else {
+          $i.addClass( 'fa fa-square-o' );
+        }
 
-      $div.attr( 'data-liked', liked );
-    } );
+        $div.attr( 'data-liked', liked );
+      } );
 
-    $div.append( $btn );
+      $div.append( $btn );
 
-    return $div;
+      return $div;
+    },
+    retrieve: function retrieveLike( div ) {
+      var $div = $( div );
+
+      return $div.data( 'liked' );
+    }
   };
 
   // ## Tag
   //
-  operationImplementation[ 'tag' ] = function createTag( operation ) {
-    var $div = $( '<div></div>' );
-    $div.addClass( 'action '+operation.name );
-    $div.attr( 'data-operation', operation._id );
+  operationImplementation[ 'tag' ] = {
+    create: function createTag( operation, object ) {
+      var $div = createOperationContainer( operation, object );
 
-    $div.append('<input type="text" class="form-control">' );
-    return $div;
+      $div.append('<input type="text" class="form-control">' );
+      return $div;
+    },
+    retrieve: function retrieveTag( div ) {
+      var $div = $( div );
+      var $input = $( 'input', $div );
+      var value = $input.val();
+      value = value.trim();
+      if( value.length>0 ) {
+        return value.split( ',' );
+      } else {
+        return undefined;
+      }
+    }
   };
-
 
 
 
