@@ -1,6 +1,5 @@
 // Wrap the function so it wont pollute the global object
-( function( w, $ ) {
-
+( function( w, $, HBS ) {
   // # Module-wide available properties
   //
   // TEF compiled fields
@@ -15,13 +14,13 @@
 
     var querystring = {};
     var params = querystringInput.split( '&' );
-    for (var i = 0; i < params.length; i++) {
-      var matches = params[i].match( /(.*)?=(.*)?/i );
-      if( matches ) {
+    for ( var i = 0; i < params.length; i++ ) {
+      var matches = params[ i ].match( /(.*)?=(.*)?/i );
+      if ( matches ) {
         var key = matches[ 1 ];
         var value = matches[ 2 ];
-        if( querystring[ key ] ) {
-          if( !$.isArray( querystring[ key ] ) )
+        if ( querystring[ key ] ) {
+          if ( !$.isArray( querystring[ key ] ) )
             querystring[ key ] = [ querystring[ key ] ];
           querystring[ key ].push( value );
         } else {
@@ -36,13 +35,13 @@
   // # CrowdSearcher class
   //
   function CrowdSearcher( url ) {
-    if( !url )
+    if ( !url )
       throw new Error( 'Missing url' );
 
-    if( url[url.length-1]==='/' )
+    if ( url[ url.length - 1 ] === '/' )
       url = url.slice( 0, -1 );
 
-    this.baseUrl = url+'/api/';
+    this.baseUrl = url + '/api/';
   }
 
   CrowdSearcher.prototype.callAPI = function( data, callback ) {
@@ -53,8 +52,8 @@
 
     var url = this.baseUrl + api;
     // Append query string
-    if( data.qs )
-      url += '?'+$.param( data.qs );
+    if ( data.qs )
+      url += '?' + $.param( data.qs );
 
     var req = $.ajax( {
       url: url,
@@ -68,8 +67,7 @@
       data: JSON.stringify( body )
     } );
 
-
-    if( $.isFunction( callback ) ) {
+    if ( $.isFunction( callback ) ) {
       req.done( function requestSuccess( data ) {
         return callback( null, data );
       } );
@@ -86,8 +84,10 @@
   // ## Getters
   //
   CrowdSearcher.prototype.getExecution = function( inputData, callback ) {
-    if( $.type( inputData )==='string' )
-      inputData = { execution: inputData };
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        execution: inputData
+      };
 
     var data = {
       api: 'execution',
@@ -98,8 +98,10 @@
   };
 
   CrowdSearcher.prototype.getMicrotask = function( inputData, callback ) {
-    if( $.type( inputData )==='string' )
-      inputData = { microtask: inputData };
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        microtask: inputData
+      };
 
     var data = {
       api: 'microtask',
@@ -109,8 +111,10 @@
     return this.callAPI( data, callback );
   };
   CrowdSearcher.prototype.getTask = function( inputData, callback ) {
-    if( $.type( inputData )==='string' )
-      inputData = { task: inputData };
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        task: inputData
+      };
 
     var data = {
       api: 'task',
@@ -120,8 +124,10 @@
     return this.callAPI( data, callback );
   };
   CrowdSearcher.prototype.getJob = function( inputData, callback ) {
-    if( $.type( inputData )==='string' )
-      inputData = { job: inputData };
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        job: inputData
+      };
 
     var data = {
       api: 'job',
@@ -131,8 +137,10 @@
     return this.callAPI( data, callback );
   };
   CrowdSearcher.prototype.getObject = function( inputData, callback ) {
-    if( $.type( inputData )==='string' )
-      inputData = { object: inputData };
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        object: inputData
+      };
 
     var data = {
       api: 'object',
@@ -142,8 +150,10 @@
     return this.callAPI( data, callback );
   };
   CrowdSearcher.prototype.getUser = function( inputData, callback ) {
-    if( $.type( inputData )==='string' )
-      inputData = { user: inputData };
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        user: inputData
+      };
 
     var data = {
       api: 'user',
@@ -158,11 +168,11 @@
   // ## Setters
   //
   CrowdSearcher.prototype.postAnswer = function( executionId, answers, callback ) {
-    if( !$.isArray( answers ) )
+    if ( !$.isArray( answers ) )
       answers = [ answers ];
 
     var data = {
-      api: 'answer/'+executionId,
+      api: 'answer/' + executionId,
       method: 'POST',
       data: {
         data: answers
@@ -174,100 +184,82 @@
 
 
 
-
-
   // # Operations implementation
   //
-  var operationImplementation = {};
-  function createOperationContainer( operation, object ) {
-    var $div = $( '<div></div>' );
-    // Add the Operation type
-    $div.addClass( 'cs-operation-'+operation.name );
-    $div.addClass( 'cs-operation' );
-
-    $div.attr( 'data-operation-name', operation.name );
-    $div.attr( 'data-operation', operation._id );
-    $div.attr( 'data-object', object._id );
-
-    return $div;
-  }
-
   // ## Classify
   //
-  operationImplementation[ 'classify' ] = {
-    create: function createClassify( operation, object ) {
-      var $div = createOperationContainer( operation, object );
+  HBS.registerHelper( 'printObject', function( object, asList ) {
+    if ( !asList ) {
+      return '<pre>' + JSON.stringify( object, null, 2 ) + '</pre>';
+    } else {
+      var out = '<dl class="dl-horizontal">';
+      $.each( object, function( key, value ) {
+        out += '<dt title="' + key + '">' + key + '</dt>';
 
-      var categories = operation.params.categories;
-      var select = '<select class="form-control">';
-      $.each( categories, function( i, category ) {
-        select += '<option data-category="'+category+'">'+category+'</option>';
+        var type = $.type( value );
+        if ( type === 'string' || type === 'number' || type === 'boolean' ) {
+          out += '<dd title="' + value + '">' + value + '</dd>';
+        } else {
+          out += '<dd title="' + JSON.stringify( object, null, 2 ) + '"><pre>' + JSON.stringify( object, null, 2 ) + '</pre></dd>';
+        }
       } );
-      select += '</select>';
-
-      $div.append( select );
-      return $div;
-    },
-    retrieve: function retrieveClassify( div ) {
-      var $div  = $( div );
-      var $selectedOption = $( 'select option:selected', $div );
-
-      return $selectedOption.data( 'category' );
+      out += '</dl>';
+      return out;
     }
-  };
-
+  } );
+  HBS.registerHelper( 'op-classify', function( operation ) {
+    var categories = operation.params.categories;
+    var select = '<select class="form-control">';
+    $.each( categories, function( i, category ) {
+      select += '<option data-category="' + category + '">' + category + '</option>';
+    } );
+    select += '</select>';
+    return select;
+  } );
   // ## Like
   //
-  operationImplementation[ 'like' ] = {
-    create: function createLike( operation, object ) {
-      var $div = createOperationContainer( operation, object );
-
-      var $btn = $( '<button class="btn btn-link"><i class="fa fa-square-o"></i> Liked?</button>' );
-
-      $btn.on( 'click', function() {
-        var $i = $btn.find( 'i:first' );
-        var liked = !$i.hasClass( 'fa fa-check-square-o' );
-
-        $i.removeClass( 'fa fa-square-o fa fa-check-square-o' );
-        if( liked ) {
-          $i.addClass( 'fa fa-check-square-o' );
-        } else {
-          $i.addClass( 'fa fa-square-o' );
-        }
-
-        $div.attr( 'data-liked', liked );
-      } );
-
-      $div.append( $btn );
-
-      return $div;
-    },
-    retrieve: function retrieveLike( div ) {
-      var $div = $( div );
-
-      return $div.data( 'liked' );
-    }
-  };
-
+  HBS.registerHelper( 'op-like', function() {
+    var out = '<div class="checkbox"><label><input type="checkbox"> Like</label></div>';
+    return out;
+  } );
   // ## Tag
   //
-  operationImplementation[ 'tag' ] = {
-    create: function createTag( operation, object ) {
-      var $div = createOperationContainer( operation, object );
+  HBS.registerHelper( 'op-tag', function() {
+    var out = '<input type="text" class="form-control">';
+    return out;
+  } );
 
-      $div.append('<input type="text" class="form-control">' );
-      return $div;
-    },
-    retrieve: function retrieveTag( div ) {
-      var $div = $( div );
-      var $input = $( 'input', $div );
-      var value = $input.val();
-      value = value.trim();
-      if( value.length>0 ) {
-        return value.split( ',' );
-      } else {
-        return undefined;
-      }
+  HBS.registerHelper( 'printOperation', function( operation, object ) {
+    /* jshint multistr: true*/
+    var out = '<div class="cs-operation \
+      cs-operation-' + operation.name + '" \
+      data-operation-name="' + operation.name + '" \
+      data-operation="' + operation._id + '" \
+      data-object="' + object._id + '">';
+
+    var opHelper = HBS.helpers[ 'op-' + operation.name ];
+    out += opHelper.apply( this, [ operation, object ] );
+
+    out += '</div>';
+    return out;
+  } );
+  var operationImplementation = {};
+  operationImplementation[ 'classify' ] = function( div ) {
+    var $selectedOption = $( 'select option:selected', div );
+    return $selectedOption.data( 'category' );
+  };
+  operationImplementation[ 'like' ] = function( div ) {
+    var $chk = $( ':checkbox', div );
+    return $chk.is( ':checked' );
+  };
+  operationImplementation[ 'tag' ] = function( div ) {
+    var $input = $( 'input', div );
+    var value = $input.val();
+    value = value.trim();
+    if ( value.length > 0 ) {
+      return value.split( ',' );
+    } else {
+      return undefined;
     }
   };
 
@@ -290,7 +282,7 @@
     qs: parseQueryString(),
     parseQueryString: parseQueryString
   };
-} )( window, jQuery );
+} )( window, jQuery, Handlebars );
 /*
 
   // Post answer
