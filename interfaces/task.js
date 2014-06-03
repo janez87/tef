@@ -209,6 +209,9 @@
   } );
   HBS.registerHelper( 'op-classify', function( operation ) {
     var categories = operation.params.categories;
+    if( !$.isArray( categories ) )
+      categories = JSON.parse( categories );
+    
     var select = '<select class="form-control">';
     $.each( categories, function( i, category ) {
       select += '<option data-category="' + category + '">' + category + '</option>';
