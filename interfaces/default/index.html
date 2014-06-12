@@ -18,28 +18,32 @@
     <![endif]-->
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- Header -->
-      <div class="row header">
-        <div class="col-md-3 text-left">
-          <a href="http://www.polimi.it/" target="_blank">
-            <img src="logo-polimi.png" title="Politecnico di Milano" class="img-thumbnail">
-          </a>
+      <header>
+        <div class="row">
+          <div class="col-xs-3 text-left">
+            <a href="http://www.polimi.it/" target="_blank">
+              <img src="logo-polimi.png" title="Politecnico di Milano" class="img-thumbnail">
+            </a>
+          </div>
+          <div class="col-xs-6 text-center">
+            <h1 id="name"></h1>
+          </div>
+          <div class="col-xs-3 text-right">
+            <a href="http://crowdsearcher.search-computing.org/" target="_blank">
+              <img src="logo-cs.png" title="CrowdSearcher" class="img-thumbnail">
+            </a>
+          </div>
         </div>
-        <div class="col-md-6 text-center">
-          <h1 id="name"></h1>
-        </div>
-        <div class="col-md-3 text-right">
-          <a href="http://crowdsearcher.search-computing.org/" target="_blank">
-            <img src="logo-cs.png" title="CrowdSearcher" class="img-thumbnail">
-          </a>
-        </div>
-      </div>
+      </header>
 
-      <hr>
       <!-- Send button -->
       <div class="row">
+        <div class="col-md-12">
+          <hr>
+        </div>
         <div class="col-md-9">
           <p class="description"></p>
         </div>
@@ -52,12 +56,19 @@
       </div>
 
       <!-- Data -->
-      <hr>
-      <div id="content"></div>
-      <hr>
+      <div class="row">
+        <div class="col-md-12">
+          <hr>
+          <div id="content"></div>
+          <hr>
+        </div>
+      </div>
 
       <!-- Send button -->
       <div class="row">
+        <div class="col-md-12">
+          <hr>
+        </div>
         <div class="col-md-9">
           <p class="description"></p>
         </div>
@@ -66,6 +77,9 @@
             Send
             <i class="fa fa-envelope-o"></i>
           </button>
+        </div>
+        <div class="col-md-12">
+          <hr>
         </div>
       </div>
 
@@ -78,12 +92,13 @@
               <h4 class="modal-title">Data sent!</h4>
             </div>
             <div class="modal-body"></div>
-            <div class="modal-footer">
+            <!--<div class="modal-footer">
               <div class="btn-group">
                 <a href="#" id="close" class="btn btn-danger" title="Close the current window/tab">Close</a>
                 <button id="more" class="btn btn-success back">Do one more!</button>
               </div>
             </div>
+            -->
           </div>
         </div>
       </div>

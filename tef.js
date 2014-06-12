@@ -7,6 +7,7 @@ Error.stackTraceLimit = Infinity;
 // Load libraries
 var express = require( 'express' );
 var fs = require( 'fs' );
+var https = require('https');
 var _ = require( 'lodash' );
 var glob = require( 'glob' );
 var path = require( 'path' );
@@ -23,7 +24,7 @@ log( 'Interfaces path: %s', interfacesPath );
 
 // Behind proxy
 app.enable( 'trust proxy' );
-app.use( app.router );
+//app.use( app.router );
 
 // Error handling
 app.use( function( err, req, res, next ) {
@@ -48,12 +49,14 @@ app.use( function( err, req, res, next ) {
 
 app.get( '/task.js', function( req, res ) {
   res.type( '.js' );
+  
   var taskJsFile = path.join( interfacesPath, 'task.js' );
   var taskJs = fs.readFileSync( taskJsFile, 'utf8' );
   taskJs = _.template( taskJs, {
     csUrl: config.csUrl
   } );
-  res.send( taskJs );
+  
+  return res.send( taskJs );
 } );
 
 
@@ -128,6 +131,12 @@ app.on( 'error', serverError );
 
 // START server
 log( 'Starting server on port %s', config.port );
-app.listen( config.port, function runningServer() {
-  log( 'Server running on port %s', config.port );
-} );
+
+
+
+
+var options = {
+  cert: fs.readFileSync( './certificate.pem' ).toString(),
+  key: fs.readFileSync( './privatekey.pem' ).toString()
+};
+https.createServer( options, app ).listen( config.port );
