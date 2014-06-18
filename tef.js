@@ -7,6 +7,7 @@ Error.stackTraceLimit = Infinity;
 // Load libraries
 var express = require( 'express' );
 var fs = require( 'fs' );
+var http = require('http');
 var https = require('https');
 var _ = require( 'lodash' );
 var glob = require( 'glob' );
@@ -130,13 +131,16 @@ var serverError = function( error ) {
 app.on( 'error', serverError );
 
 // START server
-log( 'Starting server on port %s', config.port );
+config.protocol = config.protocol || 'http';
+log( 'Starting %s server on port %s', config.protocol, config.port );
 
 
-
-
-var options = {
-  cert: fs.readFileSync( './certificate.pem' ).toString(),
-  key: fs.readFileSync( './privatekey.pem' ).toString()
-};
-https.createServer( options, app ).listen( config.port );
+if( config.protocol==='https' ) {
+  var options = {
+    cert: fs.readFileSync( './certificate.pem' ).toString(),
+    key: fs.readFileSync( './privatekey.pem' ).toString()
+  };
+  https.createServer( options, app ).listen( config.port );
+} else {
+  http.createServer( app ).listen( config.port );
+}

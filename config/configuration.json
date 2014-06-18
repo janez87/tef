@@ -1,7 +1,8 @@
 {
   "webserver": {
-    "port": 8100,
-    "hostname": "localhost"
+    "protocol": "http",
+    "hostname": "localhost",
+    "port": 8100
   },
 
   "crowdsearcher": {
