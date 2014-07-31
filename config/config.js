@@ -12,10 +12,11 @@ var config = {};
 try {
   console.log( 'Configuring nconf' );
   // Load configuration with nconf
-  nconf.argv();
-  nconf.env();
-  nconf.file( 'user', OVERRIDE_FILE );
-  nconf.file( 'global', CONFIGURATION_FILE );
+  nconf
+  .argv()
+  .env()
+  .file( 'user', OVERRIDE_FILE )
+  .file( 'global', CONFIGURATION_FILE );
 } catch( err ) {
   console.error( err );
   process.exit( 1 );
@@ -27,6 +28,7 @@ config.log = console.log.bind( console );
 
 // Export port
 config.port = nconf.get( 'webserver:port' );
+config.protocol = nconf.get( 'webserver:protocol' );
 
 
 
