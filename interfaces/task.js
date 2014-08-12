@@ -87,6 +87,19 @@
     };
     return this.callAPI( data, callback );
   };
+  CrowdSearcher.prototype.getExecutionByMicrotask = function( inputData, callback ) {
+    if ( $.type( inputData ) === 'string' )
+      inputData = {
+        microtask: inputData
+      };
+
+    var data = {
+      api: 'execution',
+      method: 'GET',
+      qs: inputData
+    };
+    return this.callAPI( data, callback );
+  };
 
   CrowdSearcher.prototype.getMicrotask = function( inputData, callback ) {
     if ( $.type( inputData ) === 'string' )
