@@ -246,7 +246,7 @@
     var categories = operation.params.categories;
     if( !$.isArray( categories ) )
       categories = JSON.parse( categories );
-    
+
     var select = '<select class="form-control">';
     $.each( categories, function( i, category ) {
       select += '<option data-category="' + category + '">' + category + '</option>';
@@ -320,38 +320,3 @@
     constructor: CrowdSearcher,
   };
 } )( window, jQuery, Handlebars );
-/*
-
-  // Post answer
-  CrowdSearcherManager.prototype.postAnswer = function( data, callback ) {
-    if( $.type( data )==='undefined' ) {
-      return alert( 'No DATA specified' );
-    }
-
-    if( !$.isFunction( callback ) ) {
-      return alert( 'No callback specified' );
-    }
-
-    var url = this.baseUrl+'answer?execution='+this.execution;
-
-    var postData = {
-      data: data
-    };
-
-    var request = $.ajax( url, {
-      type: 'POST',
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify( postData ),
-      processData: true
-    } );
-    request.done( function( data ) {
-      return callback( null, data );
-    } );
-    request.fail( function( xhr, status, error ) {
-      return callback( error, JSON.parse( xhr.responseText ) );
-    } );
-  };
-
-})( window, jQuery );
-*/
