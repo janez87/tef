@@ -1,19 +1,25 @@
-.container-fluid {
-  max-width: 1024px;
-  margin: auto;
+.header .img-thumbnail {
+  max-height: 100px;
 }
 
-header .img-thumbnail {
-  height: 100px;
+.affix {
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #fefefe;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
 }
+
 
 .footer {
   margin-top: 2em;
 }
-
-#content {
-
+.panel-title {
+  cursor: pointer;
 }
-#content .img-responsive {
-  margin: auto;
+
+#instructions {
+  text-align: justify;
 }

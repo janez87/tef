@@ -9,6 +9,8 @@ var $modal = $( '#modal' );
 var $content = $( '#content' );
 
 var $modal = $( '#modal' );
+var $more = $( '#more' , $modal );
+var $close = $( '#close' , $modal );
 
 
 // Error handlers
@@ -251,7 +253,10 @@ function handleSendClick() {
   var answers = [];
   $( '.cs-operation' ).each( function( i, opContainer ) {
     var $container = $( opContainer );
-    var answer = $container.find( '.btn.active input' ).val();
+    var operation = $container.data( 'operationName' );
+
+    var opImpl = CS.operationImplementation[ operation ];
+    var answer = opImpl? opImpl( $container ) : undefined;
 
     if( answer!==undefined && answer!==null ) {
       answers.push( {
@@ -261,9 +266,6 @@ function handleSendClick() {
       } );
     }
   } );
-
-  if( answers.length!==$( '.object' ).length )
-    return alert( 'All the images must be classified!' );
 
   // Get the execution ID from the url parameters
   var executionId = params.execution;
@@ -315,6 +317,22 @@ promise
 } )
 ;
 
+
+
+
+$more.click( function() {
+  var taskId = $( document.body ).data( 'task' );
+  var moreUrl = cs.baseUrl+'run?task='+taskId;
+  location.href = moreUrl;
+} );
+$close.click( function() {
+  window.close();
+
+  $close.off( 'click' );
+  setTimeout( function() {
+    $close.html( 'Cannot close the window automatically, close it with the &times;' );
+  }, 300 );
+} );
 
 window.onerror = handleError;
 
