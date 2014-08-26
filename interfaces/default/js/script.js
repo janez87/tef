@@ -1,4 +1,3 @@
-/* jshint browser: true, jquery: true */
 /* global CS, Handlebars, purl, markdown */
 
 
@@ -8,10 +7,9 @@ var params = purl().param();
 var $sendBtn = $( '.send' );
 var $modal = $( '#modal' );
 var $content = $( '#content' );
-//var $closeBtn = $( '#close', $modal );
-//var $moreBtn = $( '#more', $modal );
 
 var $modal = $( '#modal' );
+
 
 // Error handlers
 function winError( title, text ) {
@@ -34,7 +32,7 @@ function handleError( strError, file, row, col, err ) {
 
 function renderView( data ) {
   var template = data.template;
-  var task = data.task;
+  var task = data.task || data.entity;
 
   // Generate a renderer of the view
   var render = Handlebars.compile( template );
@@ -45,16 +43,15 @@ function renderView( data ) {
   $content.html( html );
 
   // Refinig touches
-  $( '#name' ).text( task.name );
-  $( '.description' ).html( markdown.toHTML( task.description ) );
+  $( '#name' ).text( task.name || 'Task' );
+  $( '#instructions' ).html( markdown.toHTML( task.description || '' ) );
 }
 
 
+function getTemplate( entity ) {
+  var template = entity.template || '';
 
-function getTemplate( task ) {
-  var template = task.template || '';
-  
-  // If the task contains the template parameter then return it
+  // If the entity contains the template parameter then return it
   if( template.trim().length>0 ) {
     var deferred = $.Deferred();
     return deferred.resolve( template );
@@ -63,63 +60,105 @@ function getTemplate( task ) {
   }
 }
 
+
 function showSendButtons() {
   $sendBtn.removeClass( 'hide' );
 }
 function hideSendButtons() {
   $sendBtn.addClass( 'hide' );
 }
-function renderPreview( taskId ) {
+
+function disableControls() {
+  $( 'input, select, textarea, button, .btn' )
+  .prop( 'disabled', true )
+  .addClass( 'disabled' )
+  ;
+}
+
+function renderPreview( id, type ) {
   var data = {};
-
-  return cs
-  .getTask( {
-    task: taskId,
+  var options =  {
     populate: [ 'objects', 'operations' ]
-  } )
+  };
+  var deferred;
+
+  if( type==='task' ) {
+    options.task = id;
+
+    deferred = cs
+    .getTask( options );
+  } else if( type==='microtask' ) {
+    options.microtask = id;
+    options.task = id;
+
+    deferred = cs
+    .getMicrotask( options )
+    .then( function( entity ) {
+      options.task = entity.task;
+
+      var d = cs.getTask( options )
+      .then( function( task ) {
+        data.task = task;
+        return entity;
+      });
+
+      return d;
+    } );
+  }
+
+  return deferred
   .then( function( json ) {
-    var task = json;
-    var operations = task.operations;
-
-    // Take a random number of objects
-    var numObjectsToShow = Math.ceil( Math.random()*5 );
-
-    // Pick random objects
-    var objects = [];
-    for( var i=0; i<numObjectsToShow; i++ ) {
-      var idx = Math.floor( Math.random()*task.objects.length );
-      objects.push( task.objects[ idx ] );
-    }
+    var entity = json;
+    var operations = entity.operations;
+    var objects = entity.objects;
 
     // Add the properties to the data object
-    data.task = task;
+    data.entity = entity;
     data.operations = operations;
     data.objects = objects;
 
     // Get the template and render the view
-    return task;
+    return entity;
   } )
   .then( getTemplate )
   .then( function( template ) {
     data.template = template;
     return data;
   } )
-  .then( hideSendButtons )
   .then( renderView )
+  .then( hideSendButtons )
+  .then( disableControls )
   ;
 }
-function retrieveExecution( taskId, username ) {
-  return cs
-  .getExecutionByTask( {
-    task: taskId,
-    username: username
-  } )
+
+
+function retrieveExecution( id, type, username ) {
+  var deferred;
+  var data = {
+    username: username,
+    platform: 'amt'
+  };
+
+  if( type==='task' ) {
+    data.task = id;
+
+    deferred = cs
+    .getExecutionByTask( data );
+  } else if( type==='microtask' ) {
+    data.microtask = id;
+
+    deferred = cs
+    .getExecutionByMicrotask( data );
+  }
+
+  return deferred
   .then( renderExecution );
 }
+
 function renderExecution( execution ) {
   var data = {};
   var deferred = $.Deferred();
-  
+
   return deferred
   .resolve( execution )
   .then( function( rawExecution ) {
@@ -127,6 +166,7 @@ function renderExecution( execution ) {
       throw new Error( 'Execution already closed' );
 
     data.execution = rawExecution;
+    $( document.body ).attr( 'data-execution', rawExecution._id );
 
     return rawExecution.microtask;
   } )
@@ -157,6 +197,9 @@ function renderExecution( execution ) {
   } )
   .then( function( rawTask ) {
     data.task = rawTask;
+
+    $( document.body ).attr( 'data-task', rawTask._id );
+
     return rawTask;
   } )
   .then( getTemplate )
@@ -170,50 +213,45 @@ function renderExecution( execution ) {
 }
 
 // Main entry point
-
 // Based on the passed parameter display a preview or an actual execution
 var promise;
+var type = params.microtask? 'microtask': 'task';
+var id = type==='task'? params.task : params.microtask;
 if( params.assignmentId && params.hitId ) {
   var assignmentId = params.assignmentId;
   //var hitId = params.hitId;
-  
+
   if( assignmentId==='ASSIGNMENT_ID_NOT_AVAILABLE' ) {
-    console.log( 'AMT preview' );
-    promise = renderPreview( params.run || params.preview );
+    //console.log( 'AMT preview' );
+    promise = renderPreview( id, type );
   } else {
-    console.log( 'AMT execution' );
-    promise = retrieveExecution( params.run, params.workerId );
+    //console.log( 'AMT execution' );
+    promise = retrieveExecution( id, type, params.workerId );
   }
 
 } else if( params.preview ) {
-  console.log( 'TEF preview' );
-  promise = renderPreview( params.preview );
+  //console.log( 'TEF preview' );
+  promise = renderPreview( id, type );
 
 } else if( params.run ) {
-  console.log( 'TEF get execution' );
-  promise = retrieveExecution( params.run, params.username );
+  //console.log( 'TEF get execution' );
+  promise = retrieveExecution( id, type, params.username );
 
 } else if( params.execution ) {
-  console.log( 'Render execution' );
+  //console.log( 'Render execution' );
   promise = cs
   .getExecution( params.execution )
   .then( renderExecution );
 }
 
 
+
 function handleSendClick() {
-  $sendBtn.button( 'loading' );
-  
+
   var answers = [];
   $( '.cs-operation' ).each( function( i, opContainer ) {
     var $container = $( opContainer );
-    var operation = $container.data( 'operationName' );
-
-    var opImpl = CS.operationImplementation[ operation ];
-
-    var answer;
-    if( opImpl )
-      answer = opImpl( $container );
+    var answer = $container.find( '.btn.active input' ).val();
 
     if( answer!==undefined && answer!==null ) {
       answers.push( {
@@ -224,21 +262,46 @@ function handleSendClick() {
     }
   } );
 
+  if( answers.length!==$( '.object' ).length )
+    return alert( 'All the images must be classified!' );
+
   // Get the execution ID from the url parameters
   var executionId = params.execution;
+  if( !executionId ) {
+    executionId = $( document.body ).data( 'execution' );
+  }
+  $sendBtn.button( 'loading' );
 
   // Post the answer
+  $modal.find( '.modal-header .modal-title' ).text( 'Sending data' );
+  $modal.find( '.modal-body' ).html( '<p class="text-success">Wait please...</p>' );
+  $modal.find( '.modal-footer' ).hide();
+  $modal.modal( 'show' );
+
   cs
   .postAnswer( executionId, answers )
-  .then( function( data ) {
-    console.log( data );
-  } )
-  .then( function() {
+  .always( function() {
     // Show thanks modal
     $modal.find( '.modal-header .modal-title' ).text( 'Thanks' );
     $modal.find( '.modal-body' ).html( '<p class="text-success">Data sent!</p>' );
-
+    $modal.find( '.modal-footer' ).show();
     $modal.modal( 'show' );
+
+    if( params.assignmentId && params.hitId ) {
+      var $form = $( 'form' );
+      var action = params.turkSubmitTo+'/mturk/externalSubmit';
+      $form.prop( 'action', action );
+      var $assignmentId = $form.find( 'input[name="assignmentId"]' );
+      var $executionId = $form.find( 'input[name="executionId"]' );
+      var $microtaskId = $form.find( 'input[name="microtaskId"]' );
+      var $workerId = $form.find( 'input[name="workerId"]' );
+      $assignmentId.val( params.assignmentId );
+      $microtaskId.val( params.microtask );
+      $executionId.val( executionId );
+      $workerId.val( params.workerId );
+
+      $form.submit();
+    }
   } )
   ;
 }
@@ -246,10 +309,27 @@ function handleSendClick() {
 // At the end enable the send buttons
 promise
 .done( function() {
-  if( !params.execution && !params.run ) return;
+  if( !params.task && !params.microtask && !params.execution && !params.run ) return;
 
   $sendBtn.click( handleSendClick );
 } )
 ;
 
+
 window.onerror = handleError;
+
+
+$( '.panel-title' ).click( function() {
+  var $pan = $( this );
+  $pan.find( 'i.fa' ).toggleClass( 'fa-chevron-down' );
+  $pan.find( 'i.fa' ).toggleClass( 'fa-chevron-up' );
+  $( '#instructions' ).slideToggle();
+} );
+
+
+if( window.localStorage ) {
+  if( localStorage.closed )
+    $( '.panel-title' ).click();
+
+  localStorage.setItem( 'closed', true );
+}
