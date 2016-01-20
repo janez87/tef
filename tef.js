@@ -50,13 +50,13 @@ app.use( function( err, req, res, next ) {
 
 app.get( '/task.js', function( req, res ) {
   res.type( '.js' );
-  
+
   var taskJsFile = path.join( interfacesPath, 'task.js' );
   var taskJs = fs.readFileSync( taskJsFile, 'utf8' );
   taskJs = _.template( taskJs, {
     csUrl: config.csUrl
   } );
-  
+
   return res.send( taskJs );
 } );
 

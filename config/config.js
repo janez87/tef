@@ -29,6 +29,7 @@ config.log = console.log.bind( console );
 // Export port
 config.port = nconf.get( 'webserver:port' );
 config.protocol = nconf.get( 'webserver:protocol' );
+config.hostname = nconf.get( 'webserver:hostname' );
 
 
 
