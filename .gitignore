@@ -61,6 +61,7 @@ public/compiledAssets
 interfaces/*
 !interfaces/task.js
 !interfaces/default/
+!interfaces/*.zip
 
 # Uploads
 uploads
